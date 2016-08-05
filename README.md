@@ -1,2 +1,3 @@
-# string.ify
+# String.ify
+
 A cross-platform JavaScript object stringifier / pretty-printer

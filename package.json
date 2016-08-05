@@ -1,0 +1,34 @@
+{
+  "name": "string.ify",
+  "version": "0.0.1",
+  "description": "A cross-platform JavaScript object stringifier / pretty-printer",
+  "main": "string.ify.js",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha --reporter spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xpl/string.ify.git"
+  },
+  "keywords": [
+    "stringify",
+    "toString",
+    "pretty-print",
+    "object",
+    "string",
+    "object printer"
+  ],
+  "author": "Vitaly Gordon <rocket.mind@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/xpl/string.ify/issues"
+  },
+  "homepage": "https://github.com/xpl/string.ify",
+  "devDependencies": {
+    "mocha": "^2.4.5"
+  },
+  "dependencies": {
+    "es7-object-polyfill": "0.0.1",
+    "string.bullet": "^1.0.0"
+  }
+}
