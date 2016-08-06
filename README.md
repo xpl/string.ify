@@ -40,7 +40,9 @@ Will output:
                                  zap: "lol"  } } ] }
 ```
 
-As you can see, it does some fancy alignment to make complex nested objects look more readable.
+As you can see, it does some fancy alignment to make complex nested objects look more readable:
+
+![GIF animation](http://wtf.jpg.wtf/13/34/1470446586-13341a275886bd6be2af39e3c24f2f31.gif)
 
 It automatically detects whether the pretty printing is nessesary: if total output is less than 80 symbols wide, it renders it as single line:
 
