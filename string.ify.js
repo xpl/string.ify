@@ -26,6 +26,7 @@ const stringify = module.exports = function (x, cfg) {
                 pure: false,
                 maxDepth: 5,
                 maxArrayLength: 60,
+                maxStringLength: 60,
                 precision: undefined,
                 formatter: undefined
 
@@ -67,7 +68,7 @@ const stringify = module.exports = function (x, cfg) {
         return (cfg.pure ? x.toString () : (x.name ? ('<function:' + x.name + '>') : '<function>')) }
 
     else if (typeof x === 'string') {
-        return '"' + limitTo (x, cfg.pure ? Number.MAX_SAFE_INTEGER : 60) + '"' }
+        return '"' + limitTo (x, cfg.pure ? Number.MAX_SAFE_INTEGER : cfg.maxStringLength) + '"' }
 
     else if (typeof x === 'object') {
 
