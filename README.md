@@ -163,4 +163,4 @@ Note how a renderer's context (`ctx` argument here) is passed to a renderer func
 
 ## See also
 
-Here's a fullstack web framework that utilizes `String.ify` powers for its internal needs: [https://github.com/xpl/useless](Useless™).
+Here's a fullstack web framework that utilizes `String.ify` powers for its internal needs: (https://github.com/xpl/useless)[Useless™].
