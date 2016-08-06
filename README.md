@@ -71,12 +71,6 @@ var obj = {}
 String.ify ([obj, obj, obj]) // [{  }, <ref:1>, <ref:1>]
 ```
 
-Trims too long strings with ellipsis (can be configured with `maxStringLength` in config):
-
-```javascript
-String.ify ({ yo: superLongString }) // { yo: "dasdadasdadasdadasdadasdadasdadasdadasdadasdadasdadasdadasda…" }
-```
-
 ## Configuring output
 
 You can force single-line rendering by setting `{ pretty: false }` (there also exists `String.ify.oneLine` alias):
@@ -84,6 +78,12 @@ You can force single-line rendering by setting `{ pretty: false }` (there also e
 ```javascript
 String.ify ({ nil: null, nope: undefined, fn: function ololo () {}, bar: [{ baz: "garply", qux: [1, 2, 3] }] }, { pretty: false })
 //          { nil: null, nope: undefined, fn: <function:ololo>,     bar: [{ baz: "garply", qux: [1, 2, 3] }] }
+```
+
+Setting `maxStringLength` (default is `60`):
+
+```javascript
+String.ify ({ yo: 'blablablabla' }, { maxStringLength: 4 }) // '{ yo: "bla…" }')
 ```
 
 JSON-compatible output:
