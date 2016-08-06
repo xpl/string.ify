@@ -6,7 +6,7 @@ A small, simple cross-platform JavaScript object stringifier / pretty-printer.
 
 - Humanized output
 - Highly configurable
-- Pluggable rendering (via [Symbols](http://blog.keithcirkel.co.uk/metaprogramming-in-es6-symbols/))
+- Pluggable rendering (via [Symbols](https://github.com/xpl/string.ify/blob/master/README.md#with-symbols))
 - Works in Node and browsers
 
 ## Installing
