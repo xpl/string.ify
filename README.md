@@ -73,6 +73,15 @@ var obj = {}
 String.ify ([obj, obj, obj]) // [{  }, <ref:1>, <ref:1>]
 ```
 
+It even understands jQuery objects and DOM nodes:
+
+```javascript
+$('<button id="send" class="red" /><button class="red" />']).appendTo (document.body)
+
+String.ify ($('button'))                           // "[ <button#send.red>, <button.blue> ]"
+String.ify (document.createTextNode ('some text')) // "@some text"
+```
+
 ## Configuring output
 
 You can force single-line rendering by setting `{ pretty: false }` (there also exists `String.ify.oneLine` alias):
