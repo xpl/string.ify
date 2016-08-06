@@ -1,6 +1,6 @@
 "use strict";
 
-const Object     = require ('es7-object-polyfill'),
+const O          = require ('es7-object-polyfill'),
       bullet     = require ('string.bullet'),
       isBrowser  = (typeof window !== 'undefined') && (window.window === window) && window.navigator,
       maxOf      = (arr, pick) => arr.reduce ((max, s) => Math.max (max, pick ? pick (s) : s), 0),
@@ -9,21 +9,22 @@ const Object     = require ('es7-object-polyfill'),
 
 const stringify = module.exports = function (x, cfg) {
 
-    cfg = Object.assign ({ pretty: 'auto' }, cfg)
+    cfg = O.assign ({ pretty: 'auto' }, cfg)
 
     if (cfg.pretty === 'auto') {
-        var oneLine = stringify (x, Object.assign ({}, cfg, { pretty: false, siblings: new Map () }))
+        var oneLine = stringify (x, O.assign ({}, cfg, { pretty: false, siblings: new Map () }))
         if (oneLine.length <= 80) {
             return oneLine }
         else {
-            return stringify (x, Object.assign ({}, cfg, { pretty: true, siblings: new Map () })) } }
+            return stringify (x, O.assign ({}, cfg, { pretty: true, siblings: new Map () })) } }
 
-    cfg = Object.assign ({
+    cfg = O.assign ({
 
                 parents: new Set (),
                 siblings: new Map (),
                 depth: 0,
                 pure: false,
+                color: false,
                 maxDepth: 5,
                 maxArrayLength: 60,
                 maxStringLength: 60,
@@ -32,7 +33,7 @@ const stringify = module.exports = function (x, cfg) {
 
             }, cfg, {
 
-                goDeeper: (y, newCfg) => stringify (y, Object.assign ({}, cfg, { depth: cfg.depth + 1 }, newCfg))
+                goDeeper: (y, newCfg) => stringify (y, O.assign ({}, cfg, { depth: cfg.depth + 1 }, newCfg))
 
             })
 
@@ -88,7 +89,7 @@ const stringify = module.exports = function (x, cfg) {
         return String (x) } }
 
 stringify.oneLine = function (x, cfg) {
-                        return stringify (x, Object.assign (cfg || {}, { pretty: false })) }
+                        return stringify (x, O.assign (cfg || {}, { pretty: false })) }
 
 stringify.object = function (x, cfg) {
 
@@ -114,7 +115,7 @@ stringify.object = function (x, cfg) {
         return isArray ? '<array[' + x.length + ']>' : '<object>' }
 
     var pretty   = cfg.pretty ? true : false
-    var entries  = Object.entries (x)
+    var entries  = O.entries (x)
     var oneLine  = !pretty || (entries.length < 2)
     var quoteKey = cfg.json ? (k => '"' + k + '"') : (k => k)
 
@@ -124,8 +125,8 @@ stringify.object = function (x, cfg) {
                                     var max = maxOf (strings, s => s.length)
                                     return strings.map (s => ' '.repeat (max - s.length) + s) }
 
-        var values        = Object.values (x)
-        var printedKeys   = alignStringsRight (Object.keys (x).map (k => quoteKey (k) + ': '))
+        var values        = O.values (x)
+        var printedKeys   = alignStringsRight (O.keys (x).map (k => quoteKey (k) + ': '))
         var printedValues = values.map (cfg.goDeeper)
 
         var leftPaddings = printedValues.map (function (x, i) {
