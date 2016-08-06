@@ -2,6 +2,13 @@
 
 A small, simple cross-platform JavaScript object stringifier / pretty-printer.
 
+## Why
+
+- Humanized output
+- Highly configurable
+- Pluggable rendering (via [Symbols](http://blog.keithcirkel.co.uk/metaprogramming-in-es6-symbols/))
+- Works in Node and browsers
+
 ## Installing
 
 ```javascript
