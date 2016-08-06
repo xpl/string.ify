@@ -148,7 +148,7 @@ String.ify ({ a: { b: true }, c: false })
 //         '{ a: { b: yes }, c: no }'
 ```
 
-Here's an example of adding purple ASCII color to rendered arrays:
+Here's an example of adding purple ANSI color to rendered arrays:
 
 ```javascript
 Array.prototype[Symbol.for ('String.ify')] = function (ctx) {
