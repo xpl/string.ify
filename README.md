@@ -112,8 +112,8 @@ String.ify ({ yo: function () { return 123 } }, { pure: true }) // { yo: functio
 Setting `maxDepth` (defaults to `5`) and `maxArrayLength` (defaults to `60`):
 
 ```javascript
-String.ify ({ foo: { bar: { qux: {}       } }, qux: [1,2,3,4,5,6] }, { maxDepth: 2, maxArrayLength: 5 }),
-//         '{ foo: { bar: { qux: <object> } }, qux: <array[6]> }')
+String.ify ({ a: { b: { c: 0 } }, qux: [1,2,3,4,5,6] }, { maxDepth: 2, maxArrayLength: 5 }),
+         // { a: { b: <object> }, qux: <array[6]> }
 ```
 
 Setting floating-point output precision:

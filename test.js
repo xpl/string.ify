@@ -110,8 +110,8 @@ describe ('String.ify', () => {
 
     it ('allows maxDepth and maxArrayLength', () => {
 
-        assert.equal (String.ify ({ foo: { bar: { qux: {}       } }, qux: [1,2,3,4,5,6] }, { maxDepth: 2, maxArrayLength: 5 }),
-                                 '{ foo: { bar: { qux: <object> } }, qux: <array[6]> }')
+        assert.equal (String.ify ({ a: { b: { c: 0 } }, qux: [1,2,3,4,5,6] }, { maxDepth: 2, maxArrayLength: 5 }),
+                                 '{ a: { b: <object> }, qux: <array[6]> }')
     })
 
     it ('allows toFixed precision', () => {
