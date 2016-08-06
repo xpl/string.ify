@@ -65,7 +65,7 @@ var obj = {}
 String.ify (obj) // { foo: { bar: [<cyclic>] } }
 ```
 
-Collapsing multiple references to same object:
+Collapsing multiple references to the same object:
 
 ```javascript
 var obj = {}
@@ -138,7 +138,7 @@ String.ify ({ a: { b: true }, c: false }, { formatter: booleanAsYesNo })
 
 ### With Symbols
 
-If you don't know what they are, [read this article](http://blog.keithcirkel.co.uk/metaprogramming-in-es6-symbols/). Symbols are awesome! They allow to add hidden properties to arbitrary objects, like metadata. **String.ify** uses this mechanism to implement custom formatters on rendered objects:
+If you don't know what they are, [read this article](http://blog.keithcirkel.co.uk/metaprogramming-in-es6-symbols/). Symbols are awesome! They allow to add hidden properties (i.e. metadata) to arbitrary objects. **String.ify** uses this mechanism to implement custom formatters on rendered objects:
 
 ```javascript
 Boolean.prototype[Symbol.for ('String.ify')] = function () {
@@ -159,4 +159,4 @@ String.ify ({ a:           [{ foo: 42, bar: 43 }, 44, 45, 46] }, { pretty: true 
 //         '{ a: \u001B[35m[{ foo: 42, bar: 43 }, 44, 45, 46]\u001b[0m }')
 ```
 
-Note how a renderer's context (`ctx` argument here) is passed to a renderer function. It exposes `goDeeper` method, which has same interface as `String.ify` function. With help of that method you can render nested objects, overriding config if nessesary (in this example, we overrode the `pretty` option to enforce single-line rendering of array contents).
+Note how a renderer's context (`ctx` argument here) is passed to a renderer function. It exposes `goDeeper` method, which has the same interface as the `String.ify` function. With help of that method you can render nested objects, overriding config if nessesary (in this example, we overrode the `pretty` option to enforce single-line rendering of array contents).
