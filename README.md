@@ -94,7 +94,7 @@ String.ify ({ nil: null, nope: undefined, fn: function ololo () {}, bar: [{ baz:
 Setting `maxStringLength` (default is `60`):
 
 ```javascript
-String.ify ({ yo: 'blablablabla' }, { maxStringLength: 4 }) // '{ yo: "bla…" }')
+String.ify ({ yo: 'blablablabla' }, { maxStringLength: 4 }) // { yo: "bla…" }
 ```
 
 JSON-compatible output:
