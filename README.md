@@ -160,3 +160,7 @@ String.ify ({ a:           [{ foo: 42, bar: 43 }, 44, 45, 46] }, { pretty: true 
 ```
 
 Note how a renderer's context (`ctx` argument here) is passed to a renderer function. It exposes `goDeeper` method, which has the same interface as the `String.ify` function. With help of that method you can render nested objects, overriding config if nessesary (in this example, we overrode the `pretty` option to enforce single-line rendering of array contents).
+
+## See also
+
+Here's a fullstack web framework that utilizes `String.ify` powers for its internal needs: [https://github.com/xpl/useless](Useless™).
