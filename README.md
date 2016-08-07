@@ -96,7 +96,7 @@ Returned function will have that `configure` method too (will join new params wi
 newStringify = String.ify.configure ({ /* override params */ })
 ```
 
-You can force single-line rendering by setting `{ pretty: false }` (there also exists `String.ify.oneLine` alias):
+You can force single-line rendering by setting `{ pretty: false }`:
 
 ```javascript
 String.ify.configure ({ pretty: false })
