@@ -158,5 +158,8 @@ stringify.object = function (x, cfg) {
     }
 }
 
+stringify.limit = limitTo
+
+
 
 

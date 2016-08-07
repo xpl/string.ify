@@ -4,7 +4,7 @@
   "description": "A cross-platform JavaScript object stringifier / pretty-printer",
   "main": "string.ify.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha --reporter spec"
+    "test": "./node_modules/.bin/supervisor -n exit -x ./node_modules/.bin/mocha -- --reporter spec"
   },
   "repository": {
     "type": "git",
@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "es7-object-polyfill": "0.0.1",
-    "string.bullet": "^1.0.0"
+    "string.bullet": "^1.0.0",
+    "supervisor": "^0.11.0"
   }
 }

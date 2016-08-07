@@ -148,6 +148,12 @@ describe ('String.ify', () => {
                                  '{ a: \u001B[35m[{ foo: 42, bar: 43 }, 44, 45, 46]\u001b[0m }')
 
     })
+
+    it ('exposes some re-usable internals', () => {
+
+        assert.equal (String.ify.limit ('1234567', 5), '1234…')
+
+    })
 })
 
 
