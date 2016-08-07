@@ -96,7 +96,7 @@ Returned function will have that `configure` method too (will join new params wi
 newStringify = String.ify.configure ({ /* override params */ })
 ```
 
-You can force single-line rendering by setting `{ pretty: false }` (there also exists `String.ify.oneLine` alias):
+You can force single-line rendering by setting `{ pretty: false }`:
 
 ```javascript
 String.ify.configure ({ pretty: false })
@@ -142,10 +142,9 @@ String.ify.configure ({ precision: 2 }) ({ a: 123, b: 123.000001 }, )) // { a: 1
 ### With ad-hoc formatter
 
 ```javascript
-        booleansAsYesNo = String.ify.configure ({ formatter: (x => (typeof x === 'boolean' ? (x ? 'yes' : 'no') : undefined)) })
-
-        booleansAsYesNo  ({ a: { b: true }, c: false }),
-//                        { a: { b: yes }, c: no }
+booleansAsYesNo = String.ify.configure ({ formatter: (x => (typeof x === 'boolean' ? (x ? 'yes' : 'no') : undefined)) })
+booleansAsYesNo  ({ a: { b: true }, c: false }),
+//                { a: { b: yes }, c: no }
 ```
 
 ### With Symbols
