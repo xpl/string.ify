@@ -142,10 +142,9 @@ String.ify.configure ({ precision: 2 }) ({ a: 123, b: 123.000001 }, )) // { a: 1
 ### With ad-hoc formatter
 
 ```javascript
-        booleansAsYesNo = String.ify.configure ({ formatter: (x => (typeof x === 'boolean' ? (x ? 'yes' : 'no') : undefined)) })
-
-        booleansAsYesNo  ({ a: { b: true }, c: false }),
-//                        { a: { b: yes }, c: no }
+booleansAsYesNo = String.ify.configure ({ formatter: (x => (typeof x === 'boolean' ? (x ? 'yes' : 'no') : undefined)) })
+booleansAsYesNo  ({ a: { b: true }, c: false }),
+//                { a: { b: yes }, c: no }
 ```
 
 ### With Symbols
