@@ -30,6 +30,6 @@
   },
   "dependencies": {
     "es7-object-polyfill": "0.0.1",
-    "string.bullet": "^1.0.0",
+    "string.bullet": "^1.0.0"
   }
 }
