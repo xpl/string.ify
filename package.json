@@ -25,11 +25,11 @@
   },
   "homepage": "https://github.com/xpl/string.ify",
   "devDependencies": {
-    "mocha": "^2.4.5"
+    "mocha": "^2.4.5",
+    "supervisor": "^0.11.0"
   },
   "dependencies": {
     "es7-object-polyfill": "0.0.1",
     "string.bullet": "^1.0.0",
-    "supervisor": "^0.11.0"
   }
 }
