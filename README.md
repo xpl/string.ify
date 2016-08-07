@@ -18,7 +18,7 @@ npm install string.ify
 In your code:
 
 ```javascript
-String.ify = require ('string.ify')
+String.ify = require ('string.ify') // assign to anything you want... String.ify is here just for fun purposes
 ```
 
 ## How it works
@@ -84,43 +84,57 @@ String.ify (document.createTextNode ('some text')) // "@some text"
 
 ## Configuring output
 
+Configuring goes like this:
+
+```javascript
+String.ify = require ('string.ify').configure ({ /* params */ })
+```
+
+Returned function will have that `configure` method too (will join new params with previous ones):
+
+```javascript
+newStringify = String.ify.configure ({ /* override params */ })
+```
+
 You can force single-line rendering by setting `{ pretty: false }` (there also exists `String.ify.oneLine` alias):
 
 ```javascript
-String.ify ({ nil: null, nope: undefined, fn: function ololo () {}, bar: [{ baz: "garply", qux: [1, 2, 3] }] }, { pretty: false })
-//          { nil: null, nope: undefined, fn: <function:ololo>,     bar: [{ baz: "garply", qux: [1, 2, 3] }] }
+String.ify.configure ({ pretty: false })
+    ({ nil: null, nope: undefined, fn: function ololo () {}, bar: [{ baz: "garply", qux: [1, 2, 3] }] })
+//   { nil: null, nope: undefined, fn: <function:ololo>,     bar: [{ baz: "garply", qux: [1, 2, 3] }] }
 ```
 
 Setting `maxStringLength` (default is `60`):
 
 ```javascript
-String.ify ({ yo: 'blablablabla' }, { maxStringLength: 4 }) // { yo: "bla…" }
+String.ify.configure ({ maxStringLength: 4 }) ({ yo: 'blablablabla' }) // { yo: "bla…" }
 ```
 
 JSON-compatible output:
 
 ```javascript
-String.ify ({ foo: { bar: 'baz' } }, { json: true }) // { "foo": { "bar": "baz" } }
+String.ify.configure ({ json: true }) ({ foo: { bar: 'baz' } }) // { "foo": { "bar": "baz" } }
 ```
 
 JavaScript output:
 
 ```javascript
-String.ify ({ yo: function () { return 123 } }, { pure: true }) // { yo: function () { return 123 } }
+String.ify.configure ({ pure: true }) ({ yo: function () { return 123 } }) // { yo: function () { return 123 } }
 ```
 
 Setting `maxDepth` (defaults to `5`) and `maxArrayLength` (defaults to `60`):
 
 ```javascript
-String.ify ({ a: { b: { c: 0 } }, qux: [1,2,3,4,5,6] }, { maxDepth: 2, maxArrayLength: 5 }),
-         // { a: { b: <object> }, qux: <array[6]> }
+String.ify.configure ({ maxDepth: 2,
+                        maxArrayLength: 5 }) ({ a: { b: { c: 0 } }, qux: [1,2,3,4,5,6] }),
+                                           // { a: { b: <object> }, qux: <array[6]> }
 ```
 
 Setting floating-point output precision:
 
 ```javascript
-String.ify ({ a: 123, b: 123.000001 }))                   // { a: 123, b: 123.000001 }
-String.ify ({ a: 123, b: 123.000001 }, { precision: 2 })) // { a: 123, b: 123.00 }
+String.ify                              ({ a: 123, b: 123.000001 }))   // { a: 123, b: 123.000001 }
+String.ify.configure ({ precision: 2 }) ({ a: 123, b: 123.000001 }, )) // { a: 123, b: 123.00 }
 ```
 
 ## Custom rendering
@@ -128,12 +142,10 @@ String.ify ({ a: 123, b: 123.000001 }, { precision: 2 })) // { a: 123, b: 123.00
 ### With ad-hoc formatter
 
 ```javascript
-var booleanAsYesNo = x => (typeof x === 'boolean')
-                             ? (x ? 'yes' : 'no')
-                             : undefined) // return undefined to fall back
+        booleansAsYesNo = String.ify.configure ({ formatter: (x => (typeof x === 'boolean' ? (x ? 'yes' : 'no') : undefined)) })
 
-String.ify ({ a: { b: true }, c: false }, { formatter: booleanAsYesNo })
-//         '{ a: { b: yes }, c: no }'
+        booleansAsYesNo  ({ a: { b: true }, c: false }),
+//                        { a: { b: yes }, c: no }
 ```
 
 ### With Symbols
@@ -141,25 +153,26 @@ String.ify ({ a: { b: true }, c: false }, { formatter: booleanAsYesNo })
 If you don't know what they are, [read this article](http://blog.keithcirkel.co.uk/metaprogramming-in-es6-symbols/). Symbols are awesome! They allow to add hidden properties (i.e. metadata) to arbitrary objects. **String.ify** uses this mechanism to implement custom formatters on rendered objects:
 
 ```javascript
-Boolean.prototype[Symbol.for ('String.ify')] = function () {
+Boolean.prototype[Symbol.for ('String.ify')] = function (stringify) {
                                                    return this ? 'yes' : 'no' }
 
 String.ify ({ a: { b: true }, c: false })
 //         '{ a: { b: yes }, c: no }'
 ```
 
-Here's an example of adding purple ANSI color to rendered arrays:
+Note how a `stringify` is passed as an argument to a renderer function. Call it to render nested contents. Current config options are available as properties of that function. You can override them by calling `configure` method. Here's an example of adding purple ANSI color to rendered arrays:
 
 ```javascript
-Array.prototype[Symbol.for ('String.ify')] = function (ctx) {
-    return '\u001B[35m[' + this.map (x => ctx.goDeeper (x, { pretty: false })).join (', ') + ']\u001b[0m'
+Array.prototype[Symbol.for ('String.ify')] = function (stringify) {
+
+    var stringifyDeeper = stringify.configure ({ pretty: false, depth: stringify.depth + 1 })
+
+    return '\u001B[35m[' + this.map (stringifyDeeper).join (', ') + ']\u001b[0m'
 }
 
-String.ify ({ a:           [{ foo: 42, bar: 43 }, 44, 45, 46] }, { pretty: true })
+String.ify ({ a:           [{ foo: 42, bar: 43 }, 44, 45, 46] })
 //         '{ a: \u001B[35m[{ foo: 42, bar: 43 }, 44, 45, 46]\u001b[0m }')
 ```
-
-Note how a renderer's context (`ctx` argument here) is passed to a renderer function. It exposes `goDeeper` method, which has the same interface as the `String.ify` function. With help of that method you can render nested objects, overriding config if nessesary (in this example, we overrode the `pretty` option to enforce single-line rendering of array contents).
 
 ## See also
 
