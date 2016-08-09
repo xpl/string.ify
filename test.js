@@ -30,7 +30,7 @@ describe ('String.ify', () => {
         var object =  { yo: global, nil: null, nope: undefined, fn:           ololo,  bar: [{ baz: "garply", qux: [1, 2, 3] }] }
         var string = '{ yo: global, nil: null, nope: undefined, fn: <function:ololo>, bar: [{ baz: "garply", qux: [1, 2, 3] }] }'
 
-        assert.equal (String.ify.oneLine (object), string)
+        assert.equal (String.ify.configure ({ pretty: false }) (object), string)
     })
 
     it ('pretty prints (auto-detect)', () => {
@@ -85,6 +85,13 @@ describe ('String.ify', () => {
         var obj = {}
 
         assert.equal (String.ify ([obj, obj, obj]), '[{  }, <ref:1>, <ref:1>]')
+
+    /*  there was a bug here...    */
+
+        var pretty = String.ify.configure ({ pretty: true })
+
+        assert.equal (pretty (obj), '{  }')
+        assert.equal (pretty (obj), '{  }') // was outputting <ref:6> due to unexpected state sharing
     })
 
     it ('can output JSON', () => {

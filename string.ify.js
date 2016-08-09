@@ -9,6 +9,8 @@ const O          = require ('es7-object-polyfill'),
 const configure = cfg => {
 const stringify = O.assign (x => {
 
+        const state = O.assign ({ parents: new Set (), siblings: new Map () }, cfg)
+
         if (cfg.pretty === 'auto') {
             const   oneLine =                         stringify.configure ({ pretty: false, siblings: new Map () }) (x)
             return (oneLine.length <= 80) ? oneLine : stringify.configure ({ pretty: true,  siblings: new Map () }) (x) }
@@ -30,15 +32,15 @@ const stringify = O.assign (x => {
         else if (x === null) {
             return 'null' }
 
-        else if (cfg.parents.has (x)) {
-            return cfg.pure ? undefined : '<cyclic>' }
+        else if (state.parents.has (x)) {
+            return state.pure ? undefined : '<cyclic>' }
 
-        else if (cfg.siblings.has (x)) {
-            return cfg.pure ? undefined : '<ref:' + cfg.siblings.get (x) + '>' }
+        else if (state.siblings.has (x)) {
+            return state.pure ? undefined : '<ref:' + state.siblings.get (x) + '>' }
 
         else if (x && (typeof Symbol !== 'undefined')
                    && (customFormat = x[Symbol.for ('String.ify')])
-                   && (typeof (customFormat = customFormat.call (x, stringify)) === 'string')) {
+                   && (typeof (customFormat = customFormat.call (x, stringify.configure (state))) === 'string')) {
             return customFormat }
 
         else if (x instanceof Function) {
@@ -49,12 +51,12 @@ const stringify = O.assign (x => {
 
         else if (typeof x === 'object') {
 
-            cfg.parents.add (x)
-            cfg.siblings.set (x, cfg.siblings.size)
+            state.parents.add (x)
+            state.siblings.set (x, state.siblings.size)
 
-            const result = stringify.object (x, cfg)
+            const result = stringify.configure (O.assign ({}, state, { depth: state.depth + 1 })).object (x)
 
-            cfg.parents.delete (x)
+            state.parents.delete (x)
 
             return result }
 
@@ -69,8 +71,6 @@ const stringify = O.assign (x => {
         configure: newConfig => configure (O.assign ({}, cfg, newConfig)),
 
         limit: (s, n) => s && ((s.length <= n) ? s : (s.substr (0, n - 1) + '…')),
-
-        oneLine: x => stringify.configure ({ pretty: false }) (x),
 
         rightAlign: strings => {
                         var max = maxOf (strings, s => s.length)
@@ -96,7 +96,7 @@ const stringify = O.assign (x => {
                 else if (x instanceof Text) {
                     return '@' + stringify.limit (x.wholeText, 20) } }
 
-            if (!cfg.pure && ((cfg.depth >= cfg.maxDepth) || (isArray && (x.length > cfg.maxArrayLength)))) {
+            if (!cfg.pure && ((cfg.depth > cfg.maxDepth) || (isArray && (x.length > cfg.maxArrayLength)))) {
                 return isArray ? '<array[' + x.length + ']>' : '<object>' }
 
             const pretty   = cfg.pretty ? true : false,
@@ -108,7 +108,7 @@ const stringify = O.assign (x => {
 
                 const values        = O.values (x),
                       printedKeys   = stringify.rightAlign (O.keys (x).map (k => quoteKey (k) + ': ')),
-                      printedValues = values.map (stringify.configure ({ depth: cfg.depth + 1 })),
+                      printedValues = values.map (stringify),
                       leftPaddings  = printedValues.map ((x, i) => (((x[0] === '[') ||
                                                                      (x[0] === '{'))
                                                                         ? 3
@@ -129,7 +129,7 @@ const stringify = O.assign (x => {
 
             else {
 
-                const items   = entries.map (kv => (isArray ? '' : (quoteKey (kv[0]) + ': ')) + stringify.configure ({ depth: cfg.depth + 1 }) (kv[1])),
+                const items   = entries.map (kv => (isArray ? '' : (quoteKey (kv[0]) + ': ')) + stringify (kv[1])),
                       content = items.join (', ')
 
                 return isArray
@@ -144,8 +144,6 @@ const stringify = O.assign (x => {
 
 module.exports = configure ({
 
-                    parents:         new Set (),
-                    siblings:        new Map (),
                     depth:           0,
                     pure:            false,
                     json:            false,

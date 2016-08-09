@@ -159,14 +159,12 @@ String.ify ({ a: { b: true }, c: false })
 //         '{ a: { b: yes }, c: no }'
 ```
 
-Note how a `stringify` is passed as an argument to a renderer function. Call it to render nested contents. Current config options are available as properties of that function. You can override them by calling `configure` method. Here's an example of adding purple ANSI color to rendered arrays:
+Note how a `stringify` is passed as an argument to a renderer function. Call it to render nested contents. Current config options are available as properties of that function. You can override them by calling the `configure` method. Here's an example of adding purple ANSI color to rendered arrays:
 
 ```javascript
 Array.prototype[Symbol.for ('String.ify')] = function (stringify) {
 
-    var stringifyDeeper = stringify.configure ({ pretty: false, depth: stringify.depth + 1 })
-
-    return '\u001B[35m[' + this.map (stringifyDeeper).join (', ') + ']\u001b[0m'
+    return '\u001B[35m[' + this.map (stringify).join (', ') + ']\u001b[0m'
 }
 
 String.ify ({ a:           [{ foo: 42, bar: 43 }, 44, 45, 46] })
