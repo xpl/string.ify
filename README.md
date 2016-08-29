@@ -133,8 +133,8 @@ String.ify.configure ({ maxDepth: 2,
 Setting floating-point output precision:
 
 ```javascript
-String.ify                              ({ a: 123, b: 123.000001 }))   // { a: 123, b: 123.000001 }
-String.ify.configure ({ precision: 2 }) ({ a: 123, b: 123.000001 }, )) // { a: 123, b: 123.00 }
+String.ify                              ({ a: 123, b: 123.000001 }) // { a: 123, b: 123.000001 }
+String.ify.configure ({ precision: 2 }) ({ a: 123, b: 123.000001 }) // { a: 123, b: 123.00 }
 ```
 
 ## Custom rendering
