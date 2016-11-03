@@ -167,6 +167,7 @@ describe ('String.ify', () => {
         assert.equal (String.ify ({ a: [{ foo: 42, bar: 43 }, 44, 45, 46] }),
                                  '{ a: \u001B[35m[{ foo: 42, bar: 43 }, 44, 45, 46]\u001b[0m }')
 
+        delete Boolean.prototype[Symbol.for ('String.ify')]
     })
 
     it ('exposes some re-usable internals', () => {

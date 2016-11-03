@@ -26,7 +26,7 @@
   "homepage": "https://github.com/xpl/string.ify",
   "devDependencies": {
     "babel-preset-es2015": "^6.14.0",
-    "mocha": "^2.4.5"
+    "mocha": "^3.1.2"
   },
   "dependencies": {
     "es7-object-polyfill": "0.0.3",
