@@ -32,6 +32,9 @@ const stringify = O.assign (x => {
         else if (x === null) {
             return 'null' }
 
+        else if (x instanceof Date) {
+            return state.pure ? x.getTime () : "📅  " + x.toString () }
+
         else if (state.parents.has (x)) {
             return state.pure ? undefined : '<cyclic>' }
 

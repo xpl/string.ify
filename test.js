@@ -17,9 +17,9 @@ describe ('String.ify', () => {
 
     it ('handles scalars', () => {
 
-       assert.equal (String.ify (undefined),'undefined')
-       assert.equal (String.ify (123),      '123')
-       assert.equal (String.ify ("foo"),    '"foo"')
+        assert.equal (String.ify (undefined),'undefined')
+        assert.equal (String.ify (123),      '123')
+        assert.equal (String.ify ("foo"),    '"foo"')
 
     })
 
@@ -31,6 +31,15 @@ describe ('String.ify', () => {
         var string = '{ yo: global, nil: null, nope: undefined, fn: <function:ololo>, bar: [{ baz: "garply", qux: [1, 2, 3] }] }'
 
         assert.equal (String.ify.configure ({ pretty: false }) (object), string)
+    })
+
+    it ('handles Date objects', () => {
+
+        const date = new Date (1488500526560)
+
+        assert (String.ify ({ foo: date }).indexOf ('{ foo: 📅  ') === 0)
+
+        assert.equal (String.ify.configure ({ pure: true }) ({ foo: date }), '{ foo: 1488500526560 }')
     })
 
     it ('pretty prints (auto-detect)', () => {
@@ -168,6 +177,7 @@ describe ('String.ify', () => {
                                  '{ a: \u001B[35m[{ foo: 42, bar: 43 }, 44, 45, 46]\u001b[0m }')
 
         delete Boolean.prototype[Symbol.for ('String.ify')]
+        delete Array.prototype  [Symbol.for ('String.ify')]
     })
 
     it ('exposes some re-usable internals', () => {
