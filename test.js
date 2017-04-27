@@ -185,6 +185,14 @@ describe ('String.ify', () => {
         assert.equal (String.ify.limit ('1234567', 5), '1234…')
 
     })
+
+    it ('understands typed arrays', () => {
+
+        for (const TypedArray of [Float64Array, Float32Array, Int8Array, Uint8Array, Uint8ClampedArray, Int16Array, Int32Array, Uint32Array]) {
+
+            assert.equal (String.ify (new TypedArray ([1, 2, 3])), '[1, 2, 3]')
+        }
+    })
 })
 
 

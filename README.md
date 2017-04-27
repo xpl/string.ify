@@ -9,6 +9,10 @@ A small, simple cross-platform JavaScript object stringifier / pretty-printer.
 - Pluggable rendering (via [Symbols](https://github.com/xpl/string.ify/blob/master/README.md#with-symbols))
 - Works in Node and browsers
 
+## Recent changes
+
+- Now understands typed arrays
+
 ## Installing
 
 ```javascript

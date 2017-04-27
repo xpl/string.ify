@@ -4,7 +4,15 @@ const O          = require ('es7-object-polyfill'),
       bullet     = require ('string.bullet'),
       isBrowser  = (typeof window !== 'undefined') && (window.window === window) && window.navigator,
       maxOf      = (arr, pick) => arr.reduce ((max, s) => Math.max (max, pick ? pick (s) : s), 0),
-      isInteger  = Number.isInteger || (value => (typeof value === 'number') && isFinite (value) && (Math.floor (value) === value))
+      isInteger  = Number.isInteger || (value => (typeof value === 'number') && isFinite (value) && (Math.floor (value) === value)),
+      isTypedArray = x => (x instanceof Float32Array) ||
+                          (x instanceof Float64Array) ||
+                          (x instanceof Int8Array) ||
+                          (x instanceof Uint8Array) ||
+                          (x instanceof Uint8ClampedArray) ||
+                          (x instanceof Int16Array) ||
+                          (x instanceof Int32Array) ||
+                          (x instanceof Uint32Array)
 
 const configure = cfg => {
 const stringify = O.assign (x => {
@@ -22,6 +30,9 @@ const stringify = O.assign (x => {
 
         if ((typeof jQuery !== 'undefined') && (x instanceof jQuery)) {
             x = x.toArray () }
+
+        else if (isTypedArray (x)) {
+            x = Array.from (x) }
 
         if (isBrowser && (x === window)) {
             return 'window' }
