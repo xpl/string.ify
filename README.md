@@ -186,4 +186,4 @@ stringify ({ a:           [{ foo: 42, bar: 43 }, 44, 45, 46] })
 
 ## More
 
-- [Ololog!](https://github.com/xpl/ololog) platform-agnostic logging powered with _String.ify_
+- [Ololog](https://github.com/xpl/ololog) — a platform-agnostic logging powered with _String.ify_
