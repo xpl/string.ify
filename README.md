@@ -119,12 +119,6 @@ stringify.noPretty
 //   { nil: null, nope: undefined, fn: <function:ololo>,     bar: [{ baz: "garply", qux: [1, 2, 3] }] }
 ```
 
-Setting `maxStringLength` (default is `60`):
-
-```javascript
-stringify.maxStringLength (4) ({ yo: 'blablablabla' }) // { yo: "bla…" }
-```
-
 JSON-compatible output:
 
 ```javascript
@@ -142,6 +136,18 @@ Setting `maxDepth` (defaults to `5`) and `maxArrayLength` (defaults to `60`):
 ```javascript
 stringify.maxDepth (2).maxArrayLength (5) ({ a: { b: { c: 0 } }, qux: [1,2,3,4,5,6] }),
                                         // { a: { b: <object> }, qux: <array[6]> }
+```
+
+Setting `maxStringLength` (default is `60`):
+
+```javascript
+stringify.maxStringLength (4) ({ yo: 'blablablabla' }) // { yo: "bla…" }
+```
+
+Removing limits:
+
+```javascript
+stringify.maxStringLength ().maxArrayLength () (...)
 ```
 
 Setting floating-point output precision:
