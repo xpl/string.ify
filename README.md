@@ -108,7 +108,7 @@ stringify.configure ({ ... }) (obj) // ad-hoc configuration
 Configuration parameters have chain-style setter methods:
 
 ```javascript
-stringify.pure.noPretty.maxDepth (10) (...) // same as stringify.configure ({ pure: true, noPretty: true, maxDepth: 10 })
+stringify.pure.noPretty.maxDepth (10) (...) // same as stringify.configure ({ pure: true, pretty: false, maxDepth: 10 })
 ```
 
 Forcing single-line rendering by setting `{ pretty: false }` or with `noPretty` chain helper:
@@ -117,12 +117,6 @@ Forcing single-line rendering by setting `{ pretty: false }` or with `noPretty` 
 stringify.noPretty
     ({ nil: null, nope: undefined, fn: function ololo () {}, bar: [{ baz: "garply", qux: [1, 2, 3] }] })
 //   { nil: null, nope: undefined, fn: <function:ololo>,     bar: [{ baz: "garply", qux: [1, 2, 3] }] }
-```
-
-Setting `maxStringLength` (default is `60`):
-
-```javascript
-stringify.maxStringLength (4) ({ yo: 'blablablabla' }) // { yo: "bla…" }
 ```
 
 JSON-compatible output:
@@ -142,6 +136,18 @@ Setting `maxDepth` (defaults to `5`) and `maxArrayLength` (defaults to `60`):
 ```javascript
 stringify.maxDepth (2).maxArrayLength (5) ({ a: { b: { c: 0 } }, qux: [1,2,3,4,5,6] }),
                                         // { a: { b: <object> }, qux: <array[6]> }
+```
+
+Setting `maxStringLength` (default is `60`):
+
+```javascript
+stringify.maxStringLength (4) ({ yo: 'blablablabla' }) // { yo: "bla…" }
+```
+
+Empty argument means no limit:
+
+```javascript
+stringify.maxDepth () (...) // will render arbitrarily deep
 ```
 
 Setting floating-point output precision:
