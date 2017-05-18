@@ -144,10 +144,10 @@ Setting `maxStringLength` (default is `60`):
 stringify.maxStringLength (4) ({ yo: 'blablablabla' }) // { yo: "bla…" }
 ```
 
-Removing limits:
+Empty argument means no limit:
 
 ```javascript
-stringify.maxStringLength ().maxArrayLength () (...)
+stringify.maxDepth () (...) // will render arbitrarily deep
 ```
 
 Setting floating-point output precision:
