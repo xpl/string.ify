@@ -106,7 +106,7 @@ stringify.configure ({ ... }) (obj) // ad-hoc configuration
 
 Configuration parameters have chain-style setter methods:
 
-```
+```javascript
 stringify.pure.noPretty.maxDepth (10) (...) // same as stringify.configure ({ pure: true, noPretty: true, maxDepth: 10 })
 ```
 
