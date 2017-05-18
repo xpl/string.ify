@@ -108,7 +108,7 @@ stringify.configure ({ ... }) (obj) // ad-hoc configuration
 Configuration parameters have chain-style setter methods:
 
 ```javascript
-stringify.pure.noPretty.maxDepth (10) (...) // same as stringify.configure ({ pure: true, noPretty: true, maxDepth: 10 })
+stringify.pure.noPretty.maxDepth (10) (...) // same as stringify.configure ({ pure: true, pretty: false, maxDepth: 10 })
 ```
 
 Forcing single-line rendering by setting `{ pretty: false }` or with `noPretty` chain helper:
