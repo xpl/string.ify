@@ -11,6 +11,7 @@ A small, simple cross-platform JavaScript object stringifier / pretty-printer.
 
 ## Recent changes
 
+- Chain-style configuration helpers: `stringify.pure.noPretty.maxDepth (10) (...)`
 - Now understands typed arrays
 
 ## Installing
