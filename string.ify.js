@@ -165,7 +165,7 @@ const configure = cfg => {
                           lines    = printed.split ('\n'),
                           lastLine = lines[lines.length - 1]
 
-                    return printed +  (' '.repeat (maxOf (lines, l => l.length) - lastLine.length) + (isArray ? ' ]' : ' }')) }
+                    return printed +  (' '.repeat (maxOf (lines, l => l.length) - lastLine.length) + (isArray ? ' ]' : ' }\n')) }
 
                 else {
 
