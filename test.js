@@ -1,26 +1,26 @@
-String.ify = require ('./string.ify')
-assert     = require ('assert')
+"use strict";
+
+const stringify = require ('./string.ify')
+const assert    = require ('assert')
 
 describe ('String.ify', () => {
 
     it ('is function', () => {
 
-        assert.equal (typeof String.ify,           'function')
-        assert.equal (typeof String.ify.configure, 'function')
+        assert.equal (typeof stringify,           'function')
+        assert.equal (typeof stringify.configure, 'function')
     })
 
     it ('configure works', () => {
 
-        assert.equal (String.ify.pretty, 'auto')
-        assert.equal (String.ify.configure ({ pretty: true }).pretty, true)
+        assert.equal (stringify.configure ({ something: 42 }).state.something, 42)
     })
 
     it ('handles scalars', () => {
 
-        assert.equal (String.ify (undefined),'undefined')
-        assert.equal (String.ify (123),      '123')
-        assert.equal (String.ify ("foo"),    '"foo"')
-
+        assert.equal (stringify (undefined),'undefined')
+        assert.equal (stringify (123),      '123')
+        assert.equal (stringify ("foo"),    '"foo"')
     })
 
     it ('handles complex objects', () => {
@@ -30,24 +30,24 @@ describe ('String.ify', () => {
         var object =  { yo: global, nil: null, nope: undefined, fn:           ololo,  bar: [{ baz: "garply", qux: [1, 2, 3] }] }
         var string = '{ yo: global, nil: null, nope: undefined, fn: <function:ololo>, bar: [{ baz: "garply", qux: [1, 2, 3] }] }'
 
-        assert.equal (String.ify.configure ({ pretty: false }) (object), string)
+        assert.equal (stringify.noPretty (object), string)
     })
 
     it ('handles Date objects', () => {
 
         const date = new Date (1488500526560)
 
-        assert (String.ify ({ foo: date }).indexOf ('{ foo: 📅  ') === 0)
+        assert (stringify ({ foo: date }).indexOf ('{ foo: 📅  ') === 0)
 
-        assert.equal (String.ify.configure ({ pure: true }) ({ foo: date }), '{ foo: 1488500526560 }')
+        assert.equal (stringify.pure ({ foo: date }), '{ foo: 1488500526560 }')
     })
 
-    it ('pretty prints (auto-detect)', () => {
+    it ('pretty prints', () => {
 
         var src = {  obj: [{ someLongPropertyName: 1, propertyName: 2, propName: 3, anotherProp: 4, moreProps: 5 },
                           { propertyName: { foobarbaz: true, qux: 2, zap: "lol" } }] }
 
-        var dst =
+        var pretty =
       '{ obj: [ { someLongPropertyName: 1,\n' +
       '                   propertyName: 2,\n' +
       '                       propName: 3,\n' +
@@ -57,69 +57,51 @@ describe ('String.ify', () => {
       '                                 qux:  2,\n' +
       '                                 zap: "lol"  } } ] }'
 
-        assert.equal (String.ify (src), dst)
+        var noPretty = '{ obj: [{ someLongPropertyName: 1, propertyName: 2, propName: 3, anotherProp: 4, moreProps: 5 }, { propertyName: { foobarbaz: true, qux: 2, zap: "lol" } }] }'
 
+        assert.equal (stringify (src), pretty) // auto-detect
+        assert.equal (stringify.pretty (src), pretty) // enforced
+        assert.equal (stringify.noPretty (src), noPretty) // disabled
     })
-
-    it ('pretty prints (enforced)', () => {
-
-        var src = {    array: ['foo',
-                               'bar',
-                               'baz'],
-                        more:  'qux',
-                    evenMore:   42    }
-
-        var dst = '{    array: [ "foo",\n'    +
-                  '              "bar",\n'    +
-                  '              "baz"  ],\n' +
-                  '      more:   "qux",\n'    +
-                  '  evenMore:    42       }'
-
-        assert.equal (String.ify.configure ({ pretty: true }) (src), dst)
-
-    })
-
 
     it ('handles cyclic references', () => {
 
         var obj = {}
             obj.foo = { bar: [obj] }
 
-        assert.equal (String.ify (obj), '{ foo: { bar: [<cyclic>] } }')
-
+        assert.equal (stringify (obj), '{ foo: { bar: [<cyclic>] } }')
     })
 
     it ('handles references to same object', () => {
 
         var obj = {}
 
-        assert.equal (String.ify ([obj, obj, obj]), '[{  }, <ref:1>, <ref:1>]')
+        assert.equal (stringify ([obj, obj, obj]), '[{  }, <ref:1>, <ref:1>]')
 
     /*  there was a bug here...    */
 
-        var pretty = String.ify.configure ({ pretty: true })
-
-        assert.equal (pretty (obj), '{  }')
-        assert.equal (pretty (obj), '{  }') // was outputting <ref:6> due to unexpected state sharing
+        assert.equal (stringify.pretty (obj), '{  }')
+        assert.equal (stringify.pretty (obj), '{  }') // was outputting <ref:6> due to unexpected state sharing
     })
 
     it ('can output JSON', () => {
 
-        assert.equal (String.ify.configure ({ json: true }) ({ foo: { bar: 'baz' } }), '{ "foo": { "bar": "baz" } }')
+        assert.equal (stringify.json ({ foo: { bar: 'baz' } }), '{ "foo": { "bar": "baz" } }')
 
     })
 
     it ('can output JavaScript', () => {
         
-        assert.equal (String.ify.configure ({ pure: true }) ({ yo: function () { return 123 } }),
-                                                            '{ yo: function () { return 123 } }')
+        assert.equal (stringify.pure ({ yo: function () { return 123 } }),
+                                     '{ yo: function () { return 123 } }')
         
     })
 
     it ('trims too long strings', () => {
         
-        assert.equal (String.ify                                    ({ foo: 'x'.repeat (80) }), '{ foo: "' + 'x'.repeat (59) + '…" }')
-        assert.equal (String.ify.configure ({ maxStringLength: 4 }) ({ yo: 'blablablabla' }),   '{ yo: "bla…" }')
+        assert.equal (stringify                     ({ foo: 'a'.repeat (80) }), `{ foo: "${'a'.repeat (59)}…" }`)
+        assert.equal (stringify.maxStringLength ()  ({ foo: 'b'.repeat (80) }), `{ foo: "${'b'.repeat (80)}" }`)
+        assert.equal (stringify.maxStringLength (4) ({ yo: 'blablablabla' }),   '{ yo: "bla…" }')
     })
 
     it ('recognizes Set and Map', () => {
@@ -132,57 +114,64 @@ describe ('String.ify', () => {
             set.add ('bar')
             set.add ('qux')
             
-        assert.equal (String.ify ({ map: map, set: set }), '{ map: [["foo", 7], [{  }, 8]], set: ["bar", "qux"] }')
+        assert.equal (stringify ({ map: map, set: set }), '{ map: [["foo", 7], [{  }, 8]], set: ["bar", "qux"] }')
         
     })
 
     it ('allows maxDepth and maxArrayLength', () => {
 
-        assert.equal (String.ify.configure ({ maxDepth: 2, maxArrayLength: 5 })
+        assert.equal (stringify.maxDepth (2) ({ a: { b: { c: { d: {} } } } }), '{ a: { b: <object> } }')
+        assert.equal (stringify.maxDepth ()  ({ a: { b: { c: { d: {} } } } }), '{ a: { b: { c: { d: {  } } } } }')
 
-                                 ({ a: { b: { c: 0 } }, qux: [1,2,3,4,5,6] }),
-                                 '{ a: { b: <object> }, qux: <array[6]> }')
+        assert.equal (stringify.noPretty.maxArrayLength (5) ({ long: [...'a'.repeat (100)] }), '{ long: <array[100]> }')
+        assert.equal (stringify.noPretty.maxArrayLength ()  ({ long: [...'a'.repeat (100)] }), '{ long: [' + '"a", '.repeat (99) + '"a"] }')
     })
 
     it ('allows toFixed precision', () => {
 
-        assert.equal ('{ a: 123, b: 123.000001 }', String.ify                              ({ a: 123, b: 123.000001 }))
-        assert.equal ('{ a: 123, b: 123.00 }',     String.ify.configure ({ precision: 2 }) ({ a: 123, b: 123.000001 }))
+        assert.equal ('{ a: 123, b: 123.000001 }', stringify               ({ a: 123, b: 123.000001 }))
+        assert.equal ('{ a: 123, b: 123.00 }',     stringify.precision (2) ({ a: 123, b: 123.000001 }))
     })
 
     it ('allows custom formatter', () => {
 
-        var booleansAsYesNo = String.ify.configure ({ formatter: (x => (typeof x === 'boolean' ? (x ? 'yes' : 'no') : undefined)) })
+        var booleansAsYesNo = stringify.formatter (x => (typeof x === 'boolean' ? (x ? 'yes' : 'no') : undefined))
 
-        assert.equal (booleansAsYesNo  ({ a: { b: true }, c: false }),
-                                       '{ a: { b: yes }, c: no }')
+        assert.equal (booleansAsYesNo  ({ a: true, b: false }),
+                                       '{ a: yes, b: no }')
 
     })
 
     it ('allows setting custom formatter via special Symbol', () => {
 
+        Array.prototype[Symbol.for ('String.ify')] = function (stringify) {
+
+            return '\u001B[35m[' + this.map (x => stringify.noPretty (x)).join (', ') + ']\u001b[0m'
+        }
+
+        assert.equal (stringify ({ a: [{ foo: 42, bar: 43 }, 44, 45, 46] }),
+                                 '{ a: \u001B[35m[{ foo: 42, bar: 43 }, 44, 45, 46]\u001b[0m }')
+
+        delete Array.prototype[Symbol.for ('String.ify')]
+    })
+
+    it ('passes config params to custom formatters', () => {
+
         Boolean.prototype[Symbol.for ('String.ify')] = function (stringify) {
-            assert.equal (stringify.passingConfigParams, 42)
+
+            assert.equal (stringify.state.passingConfigParams, 42)
+
             return this ? 'yes' : 'no'
         }
 
-        assert.equal (String.ify.configure ({ passingConfigParams: 42 }) ({ a: true }), '{ a: yes }')
-
-        Array.prototype[Symbol.for ('String.ify')] = function (stringify) {
-
-            return '\u001B[35m[' + this.map (x => stringify (x)).join (', ') + ']\u001b[0m'
-        }
-
-        assert.equal (String.ify ({ a: [{ foo: 42, bar: 43 }, 44, 45, 46] }),
-                                 '{ a: \u001B[35m[{ foo: 42, bar: 43 }, 44, 45, 46]\u001b[0m }')
+        assert.equal (stringify.configure ({ passingConfigParams: 42 }) ({ a: true }), '{ a: yes }')
 
         delete Boolean.prototype[Symbol.for ('String.ify')]
-        delete Array.prototype  [Symbol.for ('String.ify')]
     })
 
     it ('exposes some re-usable internals', () => {
 
-        assert.equal (String.ify.limit ('1234567', 5), '1234…')
+        assert.equal (stringify.limit ('1234567', 5), '1234…')
 
     })
 
@@ -190,7 +179,7 @@ describe ('String.ify', () => {
 
         for (const TypedArray of [Float64Array, Float32Array, Int8Array, Uint8Array, Uint8ClampedArray, Int16Array, Int32Array, Uint32Array]) {
 
-            assert.equal (String.ify (new TypedArray ([1, 2, 3])), '[1, 2, 3]')
+            assert.equal (stringify (new TypedArray ([1, 2, 3])), '[1, 2, 3]')
         }
     })
 })
