@@ -82,6 +82,10 @@ describe ('String.ify', () => {
 
         assert.equal (stringify.pretty (obj), '{  }')
         assert.equal (stringify.pretty (obj), '{  }') // was outputting <ref:6> due to unexpected state sharing
+
+    /*  should be turned off in pure mode   */
+
+        assert.equal (stringify.pure ([obj, obj]), '[{  }, {  }]')
     })
 
     it ('can output JSON', () => {
