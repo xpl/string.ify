@@ -113,7 +113,7 @@ stringify.pure.noPretty.maxDepth (10) (...)
 
 It's the same as calling `configure` with:
 
-```
+```javascript
 stringify.configure ({ pure: true, pretty: false, maxDepth: 10 }) (...)
 ```
 
