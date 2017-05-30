@@ -173,6 +173,8 @@ booleansAsYesNo  ({ a: { b: true }, c: false }),
 //                { a: { b: yes }, c: no }
 ```
 
+Return `undefined` to fallback to the default formatter.
+
 ### With Symbols
 
 If you don't know what they are, [read this article](http://blog.keithcirkel.co.uk/metaprogramming-in-es6-symbols/). Symbols are awesome! They allow to add hidden properties (i.e. metadata) to arbitrary objects. **String.ify** uses this mechanism to implement custom formatters on rendered objects:
