@@ -92,6 +92,7 @@ describe ('String.ify', () => {
 
         assert.equal (stringify.json ({ foo: { bar: 'baz' } }), '{ "foo": { "bar": "baz" } }')
 
+        assert.equal (stringify.json ({ foo: 'a'.repeat (100) }), `{ "foo": "${'a'.repeat (100)}" }`) // there was a bug (JSON implies pure mode)
     })
 
     it ('can output JavaScript', () => {

@@ -98,7 +98,7 @@ const configure = cfg => {
             get pretty   () { return stringify.configure ({ pretty: true }) },
             get noPretty () { return stringify.configure ({ pretty: false }) },
 
-            get json () { return stringify.configure ({ json: true }) },
+            get json () { return stringify.configure ({ json: true, pure: true }) },
             get pure () { return stringify.configure ({ pure: true }) },
 
             maxStringLength (n = Number.MAX_SAFE_INTEGER) { return stringify.configure ({ maxStringLength: n }) },
