@@ -57,6 +57,7 @@ const configure = cfg => {
 
             else if (x && (typeof Symbol !== 'undefined')
                        && (customFormat = x[Symbol.for ('String.ify')])
+                       && (typeof customFormat === 'function')
                        && (typeof (customFormat = customFormat.call (x, stringify.configure (state))) === 'string')) {
 
                 return customFormat }
