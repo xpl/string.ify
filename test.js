@@ -187,6 +187,15 @@ describe ('String.ify', () => {
             assert.equal (stringify (new TypedArray ([1, 2, 3])), '[1, 2, 3]')
         }
     })
+
+    it ('escapes strings when nessesary', () => {
+
+        assert.equal (stringify.pure ({ 'foo bar':  'foo bar' }),  "{ 'foo bar': \"foo bar\" }")
+        assert.equal (stringify ({ 'foo-bar':  'foo-bar' }),  "{ 'foo-bar': \"foo-bar\" }")
+        assert.equal (stringify ({ 'foo\nbar': 'foo\nbar' }), "{ 'foo\\nbar': \"foo\\nbar\" }")
+        assert.equal (stringify ({ 'foo\'bar': 'foo\'bar' }), "{ 'foo\\'bar': \"foo\\'bar\" }")
+
+    })
 })
 
 

@@ -16,6 +16,10 @@ const O            = require ('es7-object-polyfill'),
 
 const assignProps = (to, from) => { for (const prop in from) { O.defineProperty (to, prop, O.getOwnPropertyDescriptor (from, prop)) }; return to }
 
+const escapeStr = x => x.replace (/\n/g, '\\n')
+                        .replace (/\'/g, "\\'")
+                        .replace (/\"/g, "\"")
+
 const configure = cfg => {
 
     const stringify = x => {
@@ -66,7 +70,7 @@ const configure = cfg => {
                 return (cfg.pure ? x.toString () : (x.name ? ('<function:' + x.name + '>') : '<function>')) }
 
             else if (typeof x === 'string') {
-                return '"' + stringify.limit (x, cfg.pure ? Number.MAX_SAFE_INTEGER : cfg.maxStringLength) + '"' }
+                return '"' + escapeStr (stringify.limit (x, cfg.pure ? Number.MAX_SAFE_INTEGER : cfg.maxStringLength)) + '"' }
 
             else if (typeof x === 'object') {
 
@@ -143,7 +147,8 @@ const configure = cfg => {
                 const pretty   = cfg.pretty ? true : false,
                       entries  = O.entries (x),
                       oneLine  = !pretty || (entries.length < 2),
-                      quoteKey = cfg.json ? (k => '"' + k + '"') : (k => k)
+                      quoteKey = (cfg.json ? (k => '"' + escapeStr (k) + '"') :
+                                             (k => /^[A-z][A-z0-9]*$/.test (k) ? k : ("'" + escapeStr (k) + "'")))
 
                 if (pretty) {
 
