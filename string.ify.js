@@ -18,7 +18,7 @@ const assignProps = (to, from) => { for (const prop in from) { O.defineProperty 
 
 const escapeStr = x => x.replace (/\n/g, '\\n')
                         .replace (/\'/g, "\\'")
-                        .replace (/\"/g, "\"")
+                        .replace (/\"/g, '\\"')
 
 const configure = cfg => {
 
