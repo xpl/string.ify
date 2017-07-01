@@ -199,6 +199,10 @@ stringify ({ a:           [{ foo: 42, bar: 43 }, 44, 45, 46] })
 //        '{ a: \u001B[35m[{ foo: 42, bar: 43 }, 44, 45, 46]\u001b[0m }')
 ```
 
-## More
+## Powered by
+
+- [string.bullet](https://github.com/xpl/string.bullet) — a helper for the ASCII data layouting
+
+## Applications
 
 - [Ololog](https://github.com/xpl/ololog) — a platform-agnostic logging powered with _String.ify_
