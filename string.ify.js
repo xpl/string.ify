@@ -72,6 +72,9 @@ const configure = cfg => {
             else if (typeof x === 'string') {
                 return '"' + escapeStr (stringify.limit (x, cfg.pure ? Number.MAX_SAFE_INTEGER : cfg.maxStringLength)) + '"' }
 
+            else if ((x instanceof Promise) && !state.pure) {
+                return '<Promise>' }
+
             else if (typeof x === 'object') {
 
                 state.parents.add (x)
