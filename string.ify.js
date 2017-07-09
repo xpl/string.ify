@@ -28,7 +28,7 @@ const configure = cfg => {
 
             if (cfg.pretty === 'auto') {
                 const   oneLine =                         stringify.configure ({ pretty: false, siblings: new Map () }) (x)
-                return (oneLine.length <= 80) ? oneLine : stringify.configure ({ pretty: true,  siblings: new Map () }) (x) }
+                return (oneLine.length <= 60) ? oneLine : stringify.configure ({ pretty: true,  siblings: new Map () }) (x) }
 
             var customFormat = cfg.formatter && cfg.formatter (x, stringify)
 
@@ -80,7 +80,7 @@ const configure = cfg => {
                 state.parents.add (x)
                 state.siblings.set (x, state.siblings.size)
 
-                const result = stringify.configure (O.assign ({}, state, { depth: state.depth + 1 })).object (x)
+                const result = stringify.configure (O.assign ({}, state, { pretty: state.pretty === false ? false : 'auto', depth: state.depth + 1 })).object (x)
 
                 state.parents.delete (x)
 

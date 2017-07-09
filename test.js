@@ -53,9 +53,7 @@ describe ('String.ify', () => {
       '                       propName: 3,\n' +
       '                    anotherProp: 4,\n' +
       '                      moreProps: 5  },\n' +
-      '         { propertyName: { foobarbaz:  true,\n' +
-      '                                 qux:  2,\n' +
-      '                                 zap: "lol"  } } ] }'
+      '         { propertyName: { foobarbaz: true, qux: 2, zap: "lol" } } ] }'
 
         var noPretty = '{ obj: [{ someLongPropertyName: 1, propertyName: 2, propName: 3, anotherProp: 4, moreProps: 5 }, { propertyName: { foobarbaz: true, qux: 2, zap: "lol" } }] }'
 
