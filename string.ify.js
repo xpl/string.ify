@@ -1,6 +1,6 @@
 "use strict";
 
-const O            = require ('es7-object-polyfill'),
+const O            = Object,
       bullet       = require ('string.bullet'),
       isBrowser    = (typeof window !== 'undefined') && (window.window === window) && window.navigator,
       maxOf        = (arr, pick) => arr.reduce ((max, s) => Math.max (max, pick ? pick (s) : s), 0),
