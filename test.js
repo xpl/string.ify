@@ -1,6 +1,6 @@
 "use strict";
 
-const stringify = require ('./string.ify')
+const stringify = require (process.env.STRING_IFY_TEST_FILE)
 const assert    = require ('assert')
 
 describe ('String.ify', () => {

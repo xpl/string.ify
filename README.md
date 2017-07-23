@@ -1,5 +1,7 @@
 # String.ify
 
+[![Build Status](https://travis-ci.org/xpl/string.ify.svg?branch=master)](https://travis-ci.org/xpl/string.ify) [![Coverage Status](https://coveralls.io/repos/github/xpl/string.ify/badge.svg)](https://coveralls.io/github/xpl/string.ify) [![npm](https://img.shields.io/npm/v/string.ify.svg)](https://npmjs.com/package/string.ify) [![dependencies Status](https://david-dm.org/xpl/string.ify/status.svg)](https://david-dm.org/xpl/string.ify)
+
 A small, simple cross-platform JavaScript object stringifier / pretty-printer.
 
 ## Why
