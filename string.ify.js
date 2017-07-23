@@ -1,7 +1,6 @@
 "use strict";
 
-const O            = Object,
-      bullet       = require ('string.bullet'),
+const bullet       = require ('string.bullet'),
       isBrowser    = (typeof window !== 'undefined') && (window.window === window) && window.navigator,
       maxOf        = (arr, pick) => arr.reduce ((max, s) => Math.max (max, pick ? pick (s) : s), 0),
       isInteger    = Number.isInteger || (value => (typeof value === 'number') && isFinite (value) && (Math.floor (value) === value)),
@@ -14,7 +13,7 @@ const O            = Object,
                           (x instanceof Int32Array) ||
                           (x instanceof Uint32Array)
 
-const assignProps = (to, from) => { for (const prop in from) { O.defineProperty (to, prop, O.getOwnPropertyDescriptor (from, prop)) }; return to }
+const assignProps = (to, from) => { for (const prop in from) { Object.defineProperty (to, prop, Object.getOwnPropertyDescriptor (from, prop)) }; return to }
 
 const escapeStr = x => x.replace (/\n/g, '\\n')
                         .replace (/\'/g, "\\'")
@@ -24,7 +23,7 @@ const configure = cfg => {
 
     const stringify = x => {
 
-            const state = O.assign ({ parents: new Set (), siblings: new Map () }, cfg)
+            const state = Object.assign ({ parents: new Set (), siblings: new Map () }, cfg)
 
             if (cfg.pretty === 'auto') {
                 const   oneLine =                         stringify.configure ({ pretty: false, siblings: new Map () }) (x)
@@ -80,7 +79,7 @@ const configure = cfg => {
                 state.parents.add (x)
                 state.siblings.set (x, state.siblings.size)
 
-                const result = stringify.configure (O.assign ({}, state, { pretty: state.pretty === false ? false : 'auto', depth: state.depth + 1 })).object (x)
+                const result = stringify.configure (Object.assign ({}, state, { pretty: state.pretty === false ? false : 'auto', depth: state.depth + 1 })).object (x)
 
                 state.parents.delete (x)
 
@@ -99,7 +98,7 @@ const configure = cfg => {
 
             state: cfg,
 
-            configure: newConfig => configure (O.assign ({}, cfg, newConfig)),
+            configure: newConfig => configure (Object.assign ({}, cfg, newConfig)),
 
         /*  TODO: generalize generation of these chain-style .configure helpers (maybe in a separate library, as it looks like a common pattern)    */
 
@@ -148,15 +147,15 @@ const configure = cfg => {
                     return isArray ? '<array[' + x.length + ']>' : '<object>' }
 
                 const pretty   = cfg.pretty ? true : false,
-                      entries  = O.entries (x),
+                      entries  = Object.entries (x),
                       oneLine  = !pretty || (entries.length < 2),
                       quoteKey = (cfg.json ? (k => '"' + escapeStr (k) + '"') :
                                              (k => /^[A-z][A-z0-9]*$/.test (k) ? k : ("'" + escapeStr (k) + "'")))
 
                 if (pretty) {
 
-                    const values        = O.values (x),
-                          printedKeys   = stringify.rightAlign (O.keys (x).map (k => quoteKey (k) + ': ')),
+                    const values        = Object.values (x),
+                          printedKeys   = stringify.rightAlign (Object.keys (x).map (k => quoteKey (k) + ': ')),
                           printedValues = values.map (stringify),
                           leftPaddings  = printedValues.map ((x, i) => (((x[0] === '[') ||
                                                                          (x[0] === '{'))
