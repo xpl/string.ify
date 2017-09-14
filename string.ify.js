@@ -26,8 +26,8 @@ const configure = cfg => {
             const state = Object.assign ({ parents: new Set (), siblings: new Map () }, cfg)
 
             if (cfg.pretty === 'auto') {
-                const   oneLine =                                        stringify.configure ({ pretty: false, siblings: new Map () }) (x)
-                return (oneLine.length <= cfg.maxLineLength) ? oneLine : stringify.configure ({ pretty: true,  siblings: new Map () }) (x) }
+                const   oneLine =                                    stringify.configure ({ pretty: false, siblings: new Map () }) (x)
+                return (oneLine.length <= cfg.maxLength) ? oneLine : stringify.configure ({ pretty: true,  siblings: new Map () }) (x) }
 
             var customFormat = cfg.formatter && cfg.formatter (x, stringify)
 
@@ -111,7 +111,8 @@ const configure = cfg => {
             maxStringLength (n = Number.MAX_SAFE_INTEGER) { return stringify.configure ({ maxStringLength: n }) },
             maxArrayLength  (n = Number.MAX_SAFE_INTEGER) { return stringify.configure ({ maxArrayLength: n }) },
             maxDepth        (n = Number.MAX_SAFE_INTEGER) { return stringify.configure ({ maxDepth: n }) },
-
+            maxLength       (n = Number.MAX_SAFE_INTEGER) { return stringify.configure ({ maxLength: n }) },
+            
             precision (p) { return stringify.configure ({ precision: p }) },
             formatter (f) { return stringify.configure ({ formatter: f }) },
 
@@ -197,9 +198,9 @@ module.exports = configure ({
                     json:            false,
                 //  color:           false, // not supported yet
                     maxDepth:        5,
+                    maxLength:       50,
                     maxArrayLength:  60,
                     maxStringLength: 60,
-                    maxLineLength:   50,                    
                     precision:       undefined,
                     formatter:       undefined,
                     pretty:         'auto',

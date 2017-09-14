@@ -194,6 +194,39 @@ describe ('String.ify', () => {
         assert.equal (stringify ({ 'foo\'bar': 'foo\'bar' }), "{ 'foo\\'bar': \"foo\\'bar\" }")
 
     })
+
+    it.only ('maxLength works', () => {
+
+        const obj = {
+            asks: [{ price: "1000", amount: 10 }, { price: "2000", amount: 10 }],
+            bids: [{ price: "500", amount: 10 }, { price: "100", amount: 10 }]
+        }
+
+        const $0 = '{ asks: [{ price: "1000", amount: 10 }, { price: "2000", amount: 10 }], bids: [{ price: "500", amount: 10 }, { price: "100", amount: 10 }] }'
+
+        const $1 = '{ asks: [{ price: "1000", amount: 10 }, { price: "2000", amount: 10 }],\n' +
+                   '  bids: [{ price: "500", amount: 10 }, { price: "100", amount: 10 }]    }'
+
+        const $2 = [  '{ asks: [ { price: "1000", amount: 10 },'
+                    , '          { price: "2000", amount: 10 }  ],'
+                    , '  bids: [ { price: "500", amount: 10 },'
+                    , '          { price: "100", amount: 10 }  ]   }'
+                    ].join ('\n')
+
+        const $3 = '{ asks: [ {  price: "1000",'        + '\n' +
+                   '            amount:  10     },'     + '\n' +
+                   '          {  price: "2000",'        + '\n' +
+                   '            amount:  10     }  ],'  + '\n' +
+                   '  bids: [ {  price: "500",'         + '\n' +
+                   '            amount:  10    },'      + '\n' +
+                   '          {  price: "100",'         + '\n' +
+                   '            amount:  10    }  ]   }'
+                                               
+        assert.equal (stringify.maxLength () (obj),   $0)
+        assert.equal (stringify.maxLength (70) (obj), $1)
+        assert.equal (stringify.maxLength (50) (obj), $2)
+        assert.equal (stringify.maxLength (20) (obj), $3)        
+    })
 })
 
 

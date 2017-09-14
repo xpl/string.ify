@@ -139,6 +139,35 @@ JavaScript output:
 stringify.pure ({ yo: function () { return 123 } }) // { yo: function () { return 123 } }
 ```
 
+Setting `maxLength` (defaults to `50`):
+
+```javascript
+stringify.maxLength (70) ({ asks: [{ price: "1000", amount: 10 }, { price: "2000", amount: 10 }], bids: [{ price: "500", amount: 10 }, { price: "100", amount: 10 }] })
+```
+
+Example output (for values of '70', '50' and '20', respectively):
+
+```
+{ asks: [{ price: "1000", amount: 10 }, { price: "2000", amount: 10 }],
+  bids: [{ price: "500", amount: 10 }, { price: "100", amount: 10 }]    }
+```
+```
+{ asks: [ { price: "1000", amount: 10 },
+          { price: "2000", amount: 10 }  ],
+  bids: [ { price: "500", amount: 10 },
+          { price: "100", amount: 10 }  ]   }
+```
+```
+{ asks: [ {  price: "1000",
+            amount:  10     },
+          {  price: "2000",
+            amount:  10     }  ],
+  bids: [ {  price: "500",
+            amount:  10    },
+          {  price: "100",
+            amount:  10    }  ]   }
+```
+
 Setting `maxDepth` (defaults to `5`) and `maxArrayLength` (defaults to `60`):
 
 ```javascript
