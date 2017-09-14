@@ -145,7 +145,7 @@ Setting `maxLength` (defaults to `50`):
 stringify.maxLength (70) ({ asks: [{ price: "1000", amount: 10 }, { price: "2000", amount: 10 }], bids: [{ price: "500", amount: 10 }, { price: "100", amount: 10 }] })
 ```
 
-Example output (for values of '70', '50' and '20', respectively):
+Example output for `maxLength` set to `70`, `50` and `20`, respectively):
 
 ```
 { asks: [{ price: "1000", amount: 10 }, { price: "2000", amount: 10 }],
