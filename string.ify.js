@@ -26,8 +26,8 @@ const configure = cfg => {
             const state = Object.assign ({ parents: new Set (), siblings: new Map () }, cfg)
 
             if (cfg.pretty === 'auto') {
-                const   oneLine =                         stringify.configure ({ pretty: false, siblings: new Map () }) (x)
-                return (oneLine.length <= 60) ? oneLine : stringify.configure ({ pretty: true,  siblings: new Map () }) (x) }
+                const   oneLine =                                        stringify.configure ({ pretty: false, siblings: new Map () }) (x)
+                return (oneLine.length <= cfg.maxLineLength) ? oneLine : stringify.configure ({ pretty: true,  siblings: new Map () }) (x) }
 
             var customFormat = cfg.formatter && cfg.formatter (x, stringify)
 
@@ -199,10 +199,10 @@ module.exports = configure ({
                     maxDepth:        5,
                     maxArrayLength:  60,
                     maxStringLength: 60,
+                    maxLineLength:   60,                    
                     precision:       undefined,
                     formatter:       undefined,
-                    pretty:         'auto'
-
+                    pretty:         'auto',
                 })
 
 
