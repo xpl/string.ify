@@ -199,7 +199,7 @@ module.exports = configure ({
                     maxDepth:        5,
                     maxArrayLength:  60,
                     maxStringLength: 60,
-                    maxLineLength:   60,                    
+                    maxLineLength:   50,                    
                     precision:       undefined,
                     formatter:       undefined,
                     pretty:         'auto',
