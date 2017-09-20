@@ -117,7 +117,7 @@ describe ('String.ify', () => {
             set.add ('bar')
             set.add ('qux')
             
-        assert.equal (stringify ({ map: map, set: set }), '{ map: [["foo", 7], [{  }, 8]], set: ["bar", "qux"] }')
+        assert.equal (stringify.noPretty ({ map: map, set: set }), '{ map: [["foo", 7], [{  }, 8]], set: ["bar", "qux"] }')
         
     })
 
@@ -134,6 +134,7 @@ describe ('String.ify', () => {
 
         assert.equal ('{ a: 123, b: 123.000001 }', stringify               ({ a: 123, b: 123.000001 }))
         assert.equal ('{ a: 123, b: 123.00 }',     stringify.precision (2) ({ a: 123, b: 123.000001 }))
+        assert.equal ('{ a: 123, b: 123.00, c: undefined, d: null }', stringify.precision (2) ({ a: 123, b: 123.000001, c: undefined, d: null })) // regression test
     })
 
     it ('allows custom formatter', () => {
@@ -195,7 +196,7 @@ describe ('String.ify', () => {
 
     })
 
-    it.only ('maxLength works', () => {
+    it ('maxLength works', () => {
 
         const obj = {
             asks: [{ price: "1000", amount: 10 }, { price: "2000", amount: 10 }],

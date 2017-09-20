@@ -85,7 +85,7 @@ const configure = cfg => {
 
                 return result }
 
-            else if (!isInteger (x) && (cfg.precision > 0)) {
+            else if ((typeof x === 'number') && !isInteger (x) && (cfg.precision > 0)) {
                 return x.toFixed (cfg.precision) }
 
             else {
