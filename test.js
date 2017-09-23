@@ -228,6 +228,13 @@ describe ('String.ify', () => {
         assert.equal (stringify.maxLength (50) (obj), $2)
         assert.equal (stringify.maxLength (20) (obj), $3)        
     })
+
+
+    it ('renders RegExps', () => {
+
+        assert.equal (stringify      ({ foo: new RegExp (/foo/g) }), '{ foo: /foo/g }')
+        assert.equal (stringify.json ({ foo: new RegExp (/foo/g) }), '{ "foo": "/foo/g" }')
+    })
 })
 
 

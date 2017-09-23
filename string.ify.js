@@ -52,6 +52,9 @@ const configure = cfg => {
             else if (x instanceof Date) {
                 return state.pure ? x.getTime () : "📅  " + x.toString () }
 
+            else if (x instanceof RegExp) {
+                return state.json ? '"' + x.toString () + '"' : x.toString () }
+
             else if (state.parents.has (x)) {
                 return state.pure ? undefined : '<cyclic>' }
 

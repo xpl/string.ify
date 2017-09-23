@@ -13,6 +13,7 @@ A small, simple cross-platform JavaScript object stringifier / pretty-printer.
 
 ## Recent changes
 
+- `RegExp` instances now rendered correctly
 - Chain-style configuration helpers: `stringify.pure.noPretty.maxDepth (10) (...)`
 - Now understands typed arrays
 
