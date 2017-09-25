@@ -173,10 +173,10 @@ describe ('String.ify', () => {
         delete Boolean.prototype[Symbol.for ('String.ify')]
     })
 
-    it ('exposes some re-usable internals', () => {
+    it ('limit() works', () => {
 
         assert.equal (stringify.limit ('1234567', 5), '1234…')
-
+        assert.equal (stringify.limit ('\u001b[43m\u001b[36m' + '1234567' + '\u001b[39m\u001b[49m', 5), '\u001b[43m\u001b[36m' + '1234' + '\u001b[39m\u001b[49m' + '…')
     })
 
     it ('understands typed arrays', () => {

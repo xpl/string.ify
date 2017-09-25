@@ -19,6 +19,10 @@ const escapeStr = x => x.replace (/\n/g, '\\n')
                         .replace (/\'/g, "\\'")
                         .replace (/\"/g, '\\"')
 
+const { first, strlen } = require ('printable-characters') // handles ANSI codes and invisible characters
+
+const limit = (s, n) => s && ((strlen (s) <= n) ? s : (first (s, n - 1) + '…'))
+
 const configure = cfg => {
 
     const stringify = x => {
@@ -72,7 +76,7 @@ const configure = cfg => {
                 return (cfg.pure ? x.toString () : (x.name ? ('<function:' + x.name + '>') : '<function>')) }
 
             else if (typeof x === 'string') {
-                return '"' + escapeStr (stringify.limit (x, cfg.pure ? Number.MAX_SAFE_INTEGER : cfg.maxStringLength)) + '"' }
+                return '"' + escapeStr (limit (x, cfg.pure ? Number.MAX_SAFE_INTEGER : cfg.maxStringLength)) + '"' }
 
             else if ((x instanceof Promise) && !state.pure) {
                 return '<Promise>' }
@@ -121,7 +125,7 @@ const configure = cfg => {
 
         /*  Some undocumented internals    */
 
-            limit: (s, n) => s && ((s.length <= n) ? s : (s.substr (0, n - 1) + '…')),
+            limit,
 
             rightAlign: strings => {
                             var max = maxOf (strings, s => s.length)

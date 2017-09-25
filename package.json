@@ -7,7 +7,7 @@
     "lint": "eslint string.ify.js",
     "lint-test": "eslint test.js",
     "build": "npm run lint && npm run lint-test && npm run babel",
-    "test": "env STRING_IFY_TEST_FILE='./build/string.ify' nyc --reporter=html --reporter=text mocha --reporter spec",
+    "test": "npm run build && env STRING_IFY_TEST_FILE='./build/string.ify' nyc --reporter=html --reporter=text mocha --reporter spec",
     "autotest": "env STRING_IFY_TEST_FILE='./string.ify' mocha --reporter spec --watch",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
     "babel": "babel string.ify.js --source-maps inline --out-file ./build/string.ify.js"
@@ -31,17 +31,18 @@
   },
   "homepage": "https://github.com/xpl/string.ify",
   "devDependencies": {
-    "babel-cli": "^6.24.1",
+    "babel-cli": "^6.26.0",
     "babel-plugin-transform-es2017-object-entries": "0.0.4",
     "babel-preset-es2016": "^6.24.1",
     "browserify": "^14.4.0",
     "coveralls": "^2.13.1",
-    "eslint": "^4.2.0",
+    "eslint": "^4.7.2",
     "istanbul": "^0.4.5",
-    "mocha": "^3.4.2",
-    "nyc": "^11.1.0"
+    "mocha": "^3.5.3",
+    "nyc": "^11.2.1"
   },
   "dependencies": {
-    "string.bullet": "^1.0.10"
+    "printable-characters": "^1.0.28",
+    "string.bullet": "^1.0.11"
   }
 }
