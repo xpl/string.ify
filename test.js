@@ -123,11 +123,25 @@ describe ('String.ify', () => {
 
     it ('allows maxDepth and maxArrayLength', () => {
 
-        assert.equal (stringify.maxDepth (2) ({ a: { b: { c: { d: {} } } } }), '{ a: { b: <object> } }')
+        assert.equal (stringify.maxDepth (2) ({ a: { b: { c: { d: {} } } } }), '{ a: { b: <object[1]> } }')
         assert.equal (stringify.maxDepth ()  ({ a: { b: { c: { d: {} } } } }), '{ a: { b: { c: { d: {  } } } } }')
 
         assert.equal (stringify.noPretty.maxArrayLength (5) ({ long: [...'a'.repeat (100)] }), '{ long: <array[100]> }')
         assert.equal (stringify.noPretty.maxArrayLength ()  ({ long: [...'a'.repeat (100)] }), '{ long: [' + '"a", '.repeat (99) + '"a"] }')
+    })
+
+    it ('maxObjectLength works', () => {
+
+        const bigObject = {}
+        const bigObjectKeys = []
+        for (let i = 0; i < 6; i++) {
+            bigObject[i] = i
+            bigObjectKeys.push ("'" + i + "': " + i)
+        }
+        const bigObjectStr = '{ ' + bigObjectKeys.join (', ') + ' }'
+
+        assert.equal (stringify.noPretty.maxObjectLength (5) ({ long: bigObject }), '{ long: <object[6]> }')
+        assert.equal (stringify.noPretty.maxObjectLength ()  ({ long: bigObject }), '{ long: ' + bigObjectStr + ' }')
     })
 
     it ('allows toFixed precision', () => {

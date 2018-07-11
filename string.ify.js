@@ -117,6 +117,7 @@ const configure = cfg => {
 
             maxStringLength (n = Number.MAX_SAFE_INTEGER) { return stringify.configure ({ maxStringLength: n }) },
             maxArrayLength  (n = Number.MAX_SAFE_INTEGER) { return stringify.configure ({ maxArrayLength: n }) },
+            maxObjectLength (n = Number.MAX_SAFE_INTEGER) { return stringify.configure ({ maxObjectLength: n }) },
             maxDepth        (n = Number.MAX_SAFE_INTEGER) { return stringify.configure ({ maxDepth: n }) },
             maxLength       (n = Number.MAX_SAFE_INTEGER) { return stringify.configure ({ maxLength: n }) },
             
@@ -151,11 +152,17 @@ const configure = cfg => {
                     else if (x instanceof Text) {
                         return '@' + stringify.limit (x.wholeText, 20) } }
 
-                if (!cfg.pure && ((cfg.depth > cfg.maxDepth) || (isArray && (x.length > cfg.maxArrayLength)))) {
-                    return isArray ? '<array[' + x.length + ']>' : '<object>' }
+                const entries = Object.entries (x)
+
+                const tooDeep = (cfg.depth > cfg.maxDepth)
+                    , tooBig  = (isArray ? (entries.length > cfg.maxArrayLength) :
+                                           (entries.length > cfg.maxObjectLength))
+
+                if (!cfg.pure && (tooDeep || tooBig)) {
+                    return '<' + (isArray ? 'array' : 'object') + '[' + entries.length + ']>'
+                }
 
                 const pretty   = cfg.pretty ? true : false,
-                      entries  = Object.entries (x),
                       oneLine  = !pretty || (entries.length < 2),
                       quoteKey = (cfg.json ? (k => '"' + escapeStr (k) + '"') :
                                              (k => /^[A-z][A-z0-9]*$/.test (k) ? k : ("'" + escapeStr (k) + "'")))
@@ -207,6 +214,7 @@ module.exports = configure ({
                     maxDepth:        5,
                     maxLength:       50,
                     maxArrayLength:  60,
+                    maxObjectLength: 200,
                     maxStringLength: 60,
                     precision:       undefined,
                     formatter:       undefined,

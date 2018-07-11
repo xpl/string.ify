@@ -176,6 +176,13 @@ stringify.maxDepth (2).maxArrayLength (5) ({ a: { b: { c: 0 } }, qux: [1,2,3,4,5
                                         // { a: { b: <object> }, qux: <array[6]> }
 ```
 
+Setting `maxObjectLength` (defaults to `200`):
+
+```javascript
+stringify.maxObjectLength (6) ({ long: { a: 1, b: 2, c: 3, d: 4, e: 5, f: 6 } })
+                            // { long: <object[6]> }
+```
+
 Setting `maxStringLength` (default is `60`):
 
 ```javascript
