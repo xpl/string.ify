@@ -75,6 +75,19 @@ describe ('String.ify', () => {
         assert.equal (output, shouldBe)
     })
 
+    it ('pretty prints (noFancy, indent)', () => {
+
+        const obj = {
+            asks: [{ price: "1000", amt: 10 }, { price: "2000", amt: 10 }],
+            bids: [{ price: "500", amt: 10 }, { price: "100", amt: 10 }]
+        }
+
+        const output = stringify.configure ({ maxLength: 20 }).noFancy.indent ('  ') (obj)
+        const shouldBe = '{\n  asks: [\n    {\n      price: "1000",\n      amt: 10\n    },\n    {\n      price: "2000",\n      amt: 10\n    }\n  ],\n  bids: [\n    {\n      price: "500",\n      amt: 10\n    },\n    {\n      price: "100",\n      amt: 10\n    }\n  ]\n}'
+
+        assert.equal (output, shouldBe)
+    })
+
     it ('pretty prints (rightAlignKeys)', () => {
 
         const obj = {
@@ -82,7 +95,7 @@ describe ('String.ify', () => {
             bids: [{ price: "500", amt: 10 }, { price: "100", amt: 10 }]
         }
 
-        const output = stringify.configure ({ maxLength: 20, rightAlignKeys: false }) (obj)
+        const output = stringify.configure ({ maxLength: 20 }).noRightAlignKeys (obj)
         const shouldBe = '{ asks: [ { price: "1000",\n            amt: 10        },\n          { price: "2000",\n            amt: 10        }  ],\n  bids: [ { price: "500",\n            amt: 10       },\n          { price: "100",\n            amt: 10       }  ]   }'
 
         assert.equal (output, shouldBe)

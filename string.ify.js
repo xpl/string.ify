@@ -110,9 +110,10 @@ const configure = cfg => {
 
         /*  TODO: generalize generation of these chain-style .configure helpers (maybe in a separate library, as it looks like a common pattern)    */
 
-            get pretty   () { return stringify.configure ({ pretty: true }) },
-            get noPretty () { return stringify.configure ({ pretty: false }) },
-            get noFancy  () { return stringify.configure ({ fancy:  false }) },
+            get pretty           () { return stringify.configure ({ pretty: true }) },
+            get noPretty         () { return stringify.configure ({ pretty: false }) },
+            get noFancy          () { return stringify.configure ({ fancy:  false }) },
+            get noRightAlignKeys () { return stringify.configure ({ rightAlignKeys: false }) },
 
             get json () { return stringify.configure ({ json: true, pure: true }) },
             get pure () { return stringify.configure ({ pure: true }) },
@@ -122,7 +123,8 @@ const configure = cfg => {
             maxObjectLength (n = Number.MAX_SAFE_INTEGER) { return stringify.configure ({ maxObjectLength: n }) },
             maxDepth        (n = Number.MAX_SAFE_INTEGER) { return stringify.configure ({ maxDepth: n }) },
             maxLength       (n = Number.MAX_SAFE_INTEGER) { return stringify.configure ({ maxLength: n }) },
-            
+            indent          (n)                           { return stringify.configure ({ indent: n }) },
+
             precision (p) { return stringify.configure ({ precision: p }) },
             formatter (f) { return stringify.configure ({ formatter: f }) },
 
