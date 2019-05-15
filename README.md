@@ -29,7 +29,7 @@ In your code:
 stringify = require ('string.ify')
 ```
 
-## How it works
+## Pretty Printing
 
 ```javascript
 stringify ({ obj: [{ someLongPropertyName: 1, propertyName: 2, anotherProp: 4, moreProps: 5 },
@@ -48,7 +48,19 @@ Will output:
                                                 zap: "lol"  } } ] }
 ```
 
-Or (with `stringify.noFancy (obj)`), if you want classic formatting:
+With `stringify.noRightAlignKeys (obj)` or [`rightAlignKeys: false`](https://github.com/xpl/string.ify#configuring), if you don't want the keys alignment:
+
+```
+{ obj: [ { someLongPropertyName: 1,
+           propertyName: 2,
+           anotherProp: 4,
+           moreProps: 5             },
+         { propertyName: { someVeryLongPropertyName: true,
+                           qux: 6,
+                           zap: "lol"                      } } ] }
+```
+
+With `stringify.noFancy (obj)` or [`fancy: false`](https://github.com/xpl/string.ify#configuring), if you want classic nesting:
 
 ```
 {
@@ -70,7 +82,7 @@ Or (with `stringify.noFancy (obj)`), if you want classic formatting:
 }
 ```
 
-In the "no fancy" mode you can also configure indentation width by:
+In the "no fancy" mode you can also set the indentation width by:
 
 ```javascript
 stringify.configure ({ fancy: false, indent: '  ' }) (obj) // 2 spaces instead of 4
@@ -99,7 +111,8 @@ stringify ({ foo: 1, bar: 2 }) // { foo: 1, bar: 2 }
 It also works with nested objects. Setting `maxLength` (defaults to `50`):
 
 ```javascript
-stringify.maxLength (70) ({ asks: [{ price: "1000", amount: 10 }, { price: "2000", amount: 10 }], bids: [{ price: "500", amount: 10 }, { price: "100", amount: 10 }] })
+stringify.maxLength (70) ({ asks: [{ price: "1000", amount: 10 }, { price: "2000", amount: 10 }],
+                            bids: [{ price: "500", amount: 10 }, { price: "100", amount: 10 }] })
 ```
 
 Example output for `maxLength` set to `70`, `50` and `20`, respectively):
@@ -124,6 +137,68 @@ Example output for `maxLength` set to `70`, `50` and `20`, respectively):
           {  price: "100",
             amount:  10    }  ]   }
 ```
+
+Forcing single-line rendering by setting `{ pretty: false }` or with `noPretty` chain helper:
+
+```javascript
+stringify.noPretty
+    ({ nil: null, nope: undefined, fn: function ololo () {}, bar: [{ baz: "garply", qux: [1, 2, 3] }] })
+//   { nil: null, nope: undefined, fn: <function:ololo>,     bar: [{ baz: "garply", qux: [1, 2, 3] }] }
+```
+
+## Configuring
+
+Configuring goes like this:
+
+```javascript
+stringify.configure ({ /* params */ }) (...)
+```
+
+You can stack `.configure` calls, as it simply returns a new function instance with config params applied:
+
+```javascript
+stringify = require ('string.ify').configure ({ ... }) // configure at import
+
+...
+
+stringify.configure ({ ... }) (obj) // ad-hoc configuration
+```
+
+Configuration parameters have chain-style setter methods:
+
+```javascript
+stringify.pure.noPretty.maxDepth (10) (...)
+```
+
+It's the same as calling `configure` with:
+
+```javascript
+stringify.configure ({ pure: true, pretty: false, maxDepth: 10 }) (...)
+```
+
+All (default) config options:
+
+```javascript
+stringify.configure ({
+
+    pure:            false,
+    json:            false,
+    maxDepth:        5,
+    maxLength:       50,
+    maxArrayLength:  60,
+    maxObjectLength: 200,
+    maxStringLength: 60,
+    precision:       undefined,
+    formatter:       undefined,
+    pretty:         'auto',
+    rightAlignKeys:  true,
+    fancy:           true,
+    indent:         '    ',
+    
+}) (...)
+```
+
+## Collapsing Lengthy Output
 
 It handles `global` and `window` references, so it wont mess up your output:
 
@@ -157,55 +232,6 @@ stringify ($('button'))                           // "[ <button#send.red>, <butt
 stringify (document.createTextNode ('some text')) // "@some text"
 ```
 
-## Configuring output
-
-Configuring goes like this:
-
-```javascript
-stringify.configure ({ /* params */ }) (...)
-```
-
-You can stack `.configure` calls, as it simply returns a new function instance with config params applied:
-
-```javascript
-stringify = require ('string.ify').configure ({ ... }) // configure at import
-
-...
-
-stringify.configure ({ ... }) (obj) // ad-hoc configuration
-```
-
-Configuration parameters have chain-style setter methods:
-
-```javascript
-stringify.pure.noPretty.maxDepth (10) (...)
-```
-
-It's the same as calling `configure` with:
-
-```javascript
-stringify.configure ({ pure: true, pretty: false, maxDepth: 10 }) (...)
-```
-
-Forcing single-line rendering by setting `{ pretty: false }` or with `noPretty` chain helper:
-
-```javascript
-stringify.noPretty
-    ({ nil: null, nope: undefined, fn: function ololo () {}, bar: [{ baz: "garply", qux: [1, 2, 3] }] })
-//   { nil: null, nope: undefined, fn: <function:ololo>,     bar: [{ baz: "garply", qux: [1, 2, 3] }] }
-```
-
-JSON-compatible output:
-
-```javascript
-stringify.json ({ foo: { bar: 'baz' } }) // { "foo": { "bar": "baz" } }
-```
-
-JavaScript output:
-
-```javascript
-stringify.pure ({ yo: function () { return 123 } }) // { yo: function () { return 123 } }
-```
 
 Setting `maxDepth` (defaults to `5`) and `maxArrayLength` (defaults to `60`):
 
@@ -231,6 +257,20 @@ Empty argument means no limit:
 
 ```javascript
 stringify.maxDepth () (...) // will render arbitrarily deep
+```
+
+## Other Configuration Options
+
+JSON-compatible output:
+
+```javascript
+stringify.json ({ foo: { bar: 'baz' } }) // { "foo": { "bar": "baz" } }
+```
+
+JavaScript output:
+
+```javascript
+stringify.pure ({ yo: function () { return 123 } }) // { yo: function () { return 123 } }
 ```
 
 Setting floating-point output precision:
