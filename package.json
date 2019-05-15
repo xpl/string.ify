@@ -1,6 +1,6 @@
 {
   "name": "string.ify",
-  "version": "1.0.55",
+  "version": "1.0.56",
   "description": "A cross-platform JavaScript object stringifier / pretty-printer",
   "main": "build/string.ify",
   "scripts": {
