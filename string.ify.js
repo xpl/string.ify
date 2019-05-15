@@ -31,7 +31,8 @@ const configure = cfg => {
 
             if (cfg.pretty === 'auto') {
                 const   oneLine =                                    stringify.configure ({ pretty: false, siblings: new Map () }) (x)
-                return (oneLine.length <= cfg.maxLength) ? oneLine : stringify.configure ({ pretty: true,  siblings: new Map () }) (x) }
+                return (oneLine.length <= cfg.maxLength) ? oneLine : stringify.configure ({ pretty: true,  siblings: new Map () }) (x)
+            }
 
             var customFormat = cfg.formatter && cfg.formatter (x, stringify)
 
@@ -111,6 +112,7 @@ const configure = cfg => {
 
             get pretty   () { return stringify.configure ({ pretty: true }) },
             get noPretty () { return stringify.configure ({ pretty: false }) },
+            get noFancy  () { return stringify.configure ({ fancy:  false }) },
 
             get json () { return stringify.configure ({ json: true, pure: true }) },
             get pure () { return stringify.configure ({ pure: true }) },
@@ -162,35 +164,48 @@ const configure = cfg => {
                     return '<' + (isArray ? 'array' : 'object') + '[' + entries.length + ']>'
                 }
 
-                const pretty   = cfg.pretty ? true : false,
-                      oneLine  = !pretty || (entries.length < 2),
-                      quoteKey = (cfg.json ? (k => '"' + escapeStr (k) + '"') :
+                const quoteKey = (cfg.json ? (k => '"' + escapeStr (k) + '"') :
                                              (k => /^[A-z][A-z0-9]*$/.test (k) ? k : ("'" + escapeStr (k) + "'")))
 
-                if (pretty) {
+                if (cfg.pretty) {
 
                     const values        = Object.values (x),
-                          printedKeys   = stringify.rightAlign (Object.keys (x).map (k => quoteKey (k) + ': ')),
+                          right         = cfg.rightAlignKeys && cfg.fancy,
+                          printedKeys   = (right ? stringify.rightAlign : x => x) (Object.keys (x).map (k => quoteKey (k) + ': ')),
                           printedValues = values.map (stringify),
-                          leftPaddings  = printedValues.map ((x, i) => (((x[0] === '[') ||
-                                                                         (x[0] === '{'))
-                                                                            ? 3
-                                                                            : ((typeof values[i] === 'string') ? 1 : 0))),
-                          maxLeftPadding = maxOf (leftPaddings),
+                          brace         = isArray ? '[' : '{',
+                          endBrace      = isArray ? ']' : '}'
 
-                          items = leftPaddings.map ((padding, i) => {
-                                            const value = ' '.repeat (maxLeftPadding - padding) + printedValues[i]
-                                            return isArray ? value : bullet (printedKeys[i], value) }),
+                    if (cfg.fancy) {
 
-                          printed = bullet (isArray ? '[ ' :
-                                                      '{ ', items.join (',\n')),
+                        const leftPaddings = printedValues.map ((x, i) => (!right ? 0 : ((x[0] === '[') ||
+                                                                                         (x[0] === '{'))
+                                                                                            ? 3
+                                                                                            : ((typeof values[i] === 'string') ? 1 : 0))),
+                              maxLeftPadding = maxOf (leftPaddings),
 
-                          lines    = printed.split ('\n'),
-                          lastLine = lines[lines.length - 1]
+                              items = leftPaddings.map ((padding, i) => {
+                                                const value = ' '.repeat (maxLeftPadding - padding) + printedValues[i]
+                                                return isArray ? value : bullet (printedKeys[i], value)
+                                      }),
 
-                    return printed +  (' '.repeat (maxOf (lines, l => l.length) - lastLine.length) + (isArray ? ' ]' : ' }')) }
+                              printed    = bullet (brace + ' ', items.join (',\n')),
+                              lines      = printed.split ('\n'),
+                              lastLine   = lines[lines.length - 1]
 
-                else {
+                        return printed +  (' '.repeat (maxOf (lines, l => l.length) - lastLine.length) + ' ' + endBrace)
+
+                    } else {
+                        
+                        const indent = cfg.indent.repeat (cfg.depth)
+
+                        return brace + '\n' +
+                                    printedValues.map ((x, i) => indent + (isArray ? x : (printedKeys[i] + x))).join (',\n') + '\n' +
+                                    cfg.indent.repeat (cfg.depth - 1) +
+                               endBrace
+                    }
+
+                } else {
 
                     const items   = entries.map (kv => (isArray ? '' : (quoteKey (kv[0]) + ': ')) + stringify (kv[1])),
                           content = items.join (', ')
@@ -219,6 +234,9 @@ module.exports = configure ({
                     precision:       undefined,
                     formatter:       undefined,
                     pretty:         'auto',
+                    rightAlignKeys:  true,
+                    fancy:           true,
+                    indent:         '    ',
                 })
 
 

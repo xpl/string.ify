@@ -48,7 +48,31 @@ Will output:
                                  zap: "lol"  } } ] }
 ```
 
-As you can see, it does some fancy alignment to make complex nested objects look more readable:
+Or (with `stringify.noFancy (obj)`), if you want classic formatting:
+
+```
+{
+    obj: [
+        {
+            someLongPropertyName: 1,
+            propertyName: 2,
+            anotherProp: 4,
+            moreProps: 5
+        },
+        {
+            propertyName: { foobarbaz: true, qux: 6, zap: "lol" }
+        }
+    ]
+}
+```
+
+In the "no fancy" mode you can also configure indentation width by:
+
+```javascript
+stringify.configure ({ fancy: false, indent: '  ' }) (obj) // 2 spaces instead of 4
+```
+
+As you can see, by default it does some fancy alignment to make complex nested objects look more readable:
 
 ![GIF Animation](https://user-images.githubusercontent.com/1707/39936518-6163e2dc-5555-11e8-9c40-3abe57371ab4.gif)
 
