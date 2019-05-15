@@ -89,7 +89,8 @@ stringify ({ foo: 1, bar: 2 }) // { foo: 1, bar: 2 }
 It also works with nested objects. Setting `maxLength` (defaults to `50`):
 
 ```javascript
-stringify.maxLength (70) ({ asks: [{ price: "1000", amount: 10 }, { price: "2000", amount: 10 }], bids: [{ price: "500", amount: 10 }, { price: "100", amount: 10 }] })
+stringify.maxLength (70) ({ asks: [{ price: "1000", amount: 10 }, { price: "2000", amount: 10 }],
+                            bids: [{ price: "500", amount: 10 }, { price: "100", amount: 10 }] })
 ```
 
 Example output for `maxLength` set to `70`, `50` and `20`, respectively):
