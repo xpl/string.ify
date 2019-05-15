@@ -33,7 +33,7 @@ stringify = require ('string.ify')
 
 ```javascript
 stringify ({ obj: [{ someLongPropertyName: 1, propertyName: 2, anotherProp: 4, moreProps: 5 },
-                   { propertyName: { foobarbaz: true, qux: 6, zap: "lol" } }] })
+                   { propertyName: { someVeryLongPropertyName: true, qux: 6, zap: "lol" } }] })
 ```
 
 Will output:
@@ -43,9 +43,9 @@ Will output:
                    propertyName: 2,
                     anotherProp: 4,
                       moreProps: 5  },
-         { propertyName: { foobarbaz:  true,
-                                 qux:  6,
-                                 zap: "lol"  } } ] }
+         { propertyName: { someVeryLongPropertyName:  true,
+                                                qux:  6,
+                                                zap: "lol"  } } ] }
 ```
 
 Or (with `stringify.noFancy (obj)`), if you want classic formatting:
@@ -60,7 +60,11 @@ Or (with `stringify.noFancy (obj)`), if you want classic formatting:
             moreProps: 5
         },
         {
-            propertyName: { foobarbaz: true, qux: 6, zap: "lol" }
+            propertyName: {
+                someVeryLongPropertyName: true,
+                qux: 6,
+                zap: "lol"
+            }
         }
     ]
 }
@@ -76,10 +80,39 @@ As you can see, by default it does some fancy alignment to make complex nested o
 
 ![GIF Animation](https://user-images.githubusercontent.com/1707/39936518-6163e2dc-5555-11e8-9c40-3abe57371ab4.gif)
 
-It automatically detects whether the pretty printing is nessesary: if total output is less than 80 symbols wide, it renders it as single line:
+It automatically detects whether the pretty printing is nessesary. If the output isn't lenghty, it renders as single line:
 
 ```javascript
 stringify ({ foo: 1, bar: 2 }) // { foo: 1, bar: 2 }
+```
+
+It also works with nested objects. Setting `maxLength` (defaults to `50`):
+
+```javascript
+stringify.maxLength (70) ({ asks: [{ price: "1000", amount: 10 }, { price: "2000", amount: 10 }], bids: [{ price: "500", amount: 10 }, { price: "100", amount: 10 }] })
+```
+
+Example output for `maxLength` set to `70`, `50` and `20`, respectively):
+
+```
+{ asks: [{ price: "1000", amount: 10 }, { price: "2000", amount: 10 }],
+  bids: [{ price: "500", amount: 10 }, { price: "100", amount: 10 }]    }
+```
+```
+{ asks: [ { price: "1000", amount: 10 },
+          { price: "2000", amount: 10 }  ],
+  bids: [ { price: "500", amount: 10 },
+          { price: "100", amount: 10 }  ]   }
+```
+```
+{ asks: [ {  price: "1000",
+            amount:  10     },
+          {  price: "2000",
+            amount:  10     }  ],
+  bids: [ {  price: "500",
+            amount:  10    },
+          {  price: "100",
+            amount:  10    }  ]   }
 ```
 
 It handles `global` and `window` references, so it wont mess up your output:
@@ -162,35 +195,6 @@ JavaScript output:
 
 ```javascript
 stringify.pure ({ yo: function () { return 123 } }) // { yo: function () { return 123 } }
-```
-
-Setting `maxLength` (defaults to `50`):
-
-```javascript
-stringify.maxLength (70) ({ asks: [{ price: "1000", amount: 10 }, { price: "2000", amount: 10 }], bids: [{ price: "500", amount: 10 }, { price: "100", amount: 10 }] })
-```
-
-Example output for `maxLength` set to `70`, `50` and `20`, respectively):
-
-```
-{ asks: [{ price: "1000", amount: 10 }, { price: "2000", amount: 10 }],
-  bids: [{ price: "500", amount: 10 }, { price: "100", amount: 10 }]    }
-```
-```
-{ asks: [ { price: "1000", amount: 10 },
-          { price: "2000", amount: 10 }  ],
-  bids: [ { price: "500", amount: 10 },
-          { price: "100", amount: 10 }  ]   }
-```
-```
-{ asks: [ {  price: "1000",
-            amount:  10     },
-          {  price: "2000",
-            amount:  10     }  ],
-  bids: [ {  price: "500",
-            amount:  10    },
-          {  price: "100",
-            amount:  10    }  ]   }
 ```
 
 Setting `maxDepth` (defaults to `5`) and `maxArrayLength` (defaults to `60`):
