@@ -85,7 +85,7 @@ With `stringify.noFancy (obj)` or [`fancy: false`](https://github.com/xpl/string
 In the "no fancy" mode you can also set the indentation width by:
 
 ```javascript
-stringify.configure ({ fancy: false, indent: '  ' }) (obj) // 2 spaces instead of 4
+stringify.configure ({ fancy: false, indentation: '  ' }) (obj) // 2 spaces instead of 4
 ```
 ```
 {
@@ -193,7 +193,7 @@ stringify.configure ({
     pretty:         'auto',
     rightAlignKeys:  true,
     fancy:           true,
-    indent:         '    ',
+    indentation:    '    ',
     
 }) (...)
 ```

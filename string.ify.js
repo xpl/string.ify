@@ -123,7 +123,7 @@ const configure = cfg => {
             maxObjectLength (n = Number.MAX_SAFE_INTEGER) { return stringify.configure ({ maxObjectLength: n }) },
             maxDepth        (n = Number.MAX_SAFE_INTEGER) { return stringify.configure ({ maxDepth: n }) },
             maxLength       (n = Number.MAX_SAFE_INTEGER) { return stringify.configure ({ maxLength: n }) },
-            indent          (n)                           { return stringify.configure ({ indent: n }) },
+            indentation     (n)                           { return stringify.configure ({ indentation: n }) },
 
             precision (p) { return stringify.configure ({ precision: p }) },
             formatter (f) { return stringify.configure ({ formatter: f }) },
@@ -199,11 +199,11 @@ const configure = cfg => {
 
                     } else {
                         
-                        const indent = cfg.indent.repeat (cfg.depth)
+                        const indent = cfg.indentation.repeat (cfg.depth)
 
                         return brace + '\n' +
                                     printedValues.map ((x, i) => indent + (isArray ? x : (printedKeys[i] + x))).join (',\n') + '\n' +
-                                    cfg.indent.repeat (cfg.depth - 1) +
+                                    cfg.indentation.repeat (cfg.depth - 1) +
                                endBrace
                     }
 
@@ -238,7 +238,7 @@ module.exports = configure ({
                     pretty:         'auto',
                     rightAlignKeys:  true,
                     fancy:           true,
-                    indent:         '    ',
+                    indentation:    '    ',
                 })
 
 
