@@ -75,6 +75,16 @@ In the "no fancy" mode you can also configure indentation width by:
 ```javascript
 stringify.configure ({ fancy: false, indent: '  ' }) (obj) // 2 spaces instead of 4
 ```
+```
+{
+  obj: [
+    {
+      propertyName: 2,
+      moreProps: 5
+    }
+  ]
+}
+```
 
 As you can see, by default it does some fancy alignment to make complex nested objects look more readable:
 
