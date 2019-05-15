@@ -48,7 +48,7 @@ Will output:
                                                 zap: "lol"  } } ] }
 ```
 
-Or (with `stringify.noRightAlignKeys (obj)`), if you don't want the keys alignment:
+With `stringify.noRightAlignKeys (obj)` or [`rightAlignKeys: false`](https://github.com/xpl/string.ify#configuring), if you don't want the keys alignment:
 
 ```
 { obj: [ { someLongPropertyName: 1,
@@ -60,7 +60,7 @@ Or (with `stringify.noRightAlignKeys (obj)`), if you don't want the keys alignme
                            zap: "lol"                      } } ] }
 ```
 
-Or (with `stringify.noFancy (obj)`), if you want classic nesting:
+With `stringify.noFancy (obj)` or [`fancy: false`](https://github.com/xpl/string.ify#configuring), if you want classic nesting:
 
 ```
 {
