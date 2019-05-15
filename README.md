@@ -29,7 +29,7 @@ In your code:
 stringify = require ('string.ify')
 ```
 
-## How It Works / Pretty Printing
+## Pretty Printing
 
 ```javascript
 stringify ({ obj: [{ someLongPropertyName: 1, propertyName: 2, anotherProp: 4, moreProps: 5 },
