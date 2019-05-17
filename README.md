@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/xpl/string.ify.svg?branch=master)](https://travis-ci.org/xpl/string.ify) [![npm](https://img.shields.io/npm/v/string.ify.svg)](https://npmjs.com/package/string.ify) [![dependencies Status](https://david-dm.org/xpl/string.ify/status.svg)](https://david-dm.org/xpl/string.ify)
 
-A small, simple cross-platform JavaScript object stringifier / pretty-printer.
+A small, simple yet powerful JavaScript object stringifier / pretty-printer.
 
 ## Why
 
