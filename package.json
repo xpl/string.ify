@@ -1,7 +1,7 @@
 {
   "name": "string.ify",
   "version": "1.0.57",
-  "description": "A cross-platform JavaScript object stringifier / pretty-printer",
+  "description": "A small, simple yet powerful JavaScript object stringifier / pretty-printer",
   "main": "build/string.ify",
   "scripts": {
     "lint": "eslint string.ify.js",
