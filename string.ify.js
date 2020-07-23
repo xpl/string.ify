@@ -2,6 +2,7 @@
 
 const bullet       = require ('string.bullet'),
       isBrowser    = (typeof window !== 'undefined') && (window.window === window) && window.navigator,
+      isURL        = x => (typeof URL !== 'undefined') && (x instanceof URL),
       maxOf        = (arr, pick) => arr.reduce ((max, s) => Math.max (max, pick ? pick (s) : s), 0),
       isInteger    = Number.isInteger || (value => (typeof value === 'number') && isFinite (value) && (Math.floor (value) === value)),
       isTypedArray = x => (x instanceof Float32Array) ||
@@ -39,12 +40,17 @@ const configure = cfg => {
             if (typeof customFormat === 'string') {
                 return customFormat }
 
+          
             if ((typeof jQuery !== 'undefined') && (x instanceof jQuery)) {
                 x = x.toArray () }
-
+          
             else if (isTypedArray (x)) {
                 x = Array.from (x) }
+            
+            else if (isURL (x)) {
+                x = x.toString () }
 
+          
             if (isBrowser && (x === window)) {
                 return 'window' }
 
