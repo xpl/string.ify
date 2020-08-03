@@ -79,7 +79,7 @@ const configure = cfg => {
         } else if (x && typeof Symbol !== 'undefined' && (customFormat = x[Symbol.for('String.ify')]) && typeof customFormat === 'function' && typeof (customFormat = customFormat.call(x, stringify.configure(state))) === 'string') {
 
             return customFormat;
-        } else if (x instanceof Function) {
+        } else if (typeof x === 'function') {
             return cfg.pure ? x.toString() : x.name ? '<function:' + x.name + '>' : '<function>';
         } else if (typeof x === 'string') {
             return '"' + escapeStr(limit(x, cfg.pure ? Number.MAX_SAFE_INTEGER : cfg.maxStringLength)) + '"';
