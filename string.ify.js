@@ -79,7 +79,7 @@ const configure = cfg => {
 
                 return customFormat }
 
-            else if (x instanceof Function) {
+            else if (typeof x === 'function') {
                 return (cfg.pure ? x.toString () : (x.name ? ('<function:' + x.name + '>') : '<function>')) }
 
             else if (typeof x === 'string') {
